@@ -1,0 +1,38 @@
+/* Color Theme Swatches in Hex */
+.backgroundcol { color: #EDEDE0; }
+.Curried-Away-2-hex { color: #D99923; }
+.textcol { color: #292929; }
+.Curried-Away-4-hex { color: #7D3B2A; }
+.primarycol { color: #B0322E; }
+:root{
+
+/*colors*/
+    --primary: #B0322E;
+    --secondary: #D99923;
+    --accents: #7D3B2A;
+    --text: #292929;
+    --backgroundcol: #EDEDE0;
+
+    /*fonts*/
+    @import url('https://fonts.googleapis.com/css2?family=Jersey+10&display=swap');
+
+
+    --letterSpacing: 1px;
+    --transition: 0.3s ease-in-out all;
+
+
+    /* box shadow*/
+    --shadow-1: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    --shadow-2: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+      0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-3: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+      0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --shadow-4: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+      0 10px 10px -5px rgba(0, 0, 0, 0.04);
+
+}
+.jersey-10-regular {
+    font-family: "Jersey 10", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+  }
