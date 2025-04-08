@@ -1,0 +1,89 @@
+nav{
+    background-color: #A82D00;
+    position: fixed;
+    top: 0;
+    width: 100%; 
+  }
+  nav h1{
+    font-family: lucida handwriting; 
+    color:#fff8f5; 
+    text-align: center; 
+    font-size: 15px;
+}
+nav a{
+    display: inline-block; 
+    width:15px; 
+    height:15px; 
+    border-left:2px solid #fff8f5; 
+    border-bottom:2px solid #fff8f5; 
+    transform:rotate(45deg); 
+    margin:20px;
+}
+body{
+    background-color: #fff8f5;
+}
+
+.one-img{
+    position: absolute; 
+    top: 150px; 
+    left: 70px;
+}
+.one-img img{
+    width: 310px; 
+    height: 310px;
+}
+.one-img img:hover{
+    transform: scale(1.1);  
+}
+.one-img figcaption{
+    color:black ;
+    position: absolute; 
+    top: 320px; 
+    left: 70px; 
+    font-family: Verdana, Geneva, Tahoma, sans-serif; 
+    font-size: 20px;
+}
+
+
+.two-img{
+    position: absolute; 
+    top: 150px; 
+    left: 600px
+}
+.two-img img{
+    width: 310px; 
+    height: 310px;
+}
+.two-img img:hover{
+    transform: scale(1.1); 
+}
+.two-img figcaption{
+    color:black ;
+    position: absolute; 
+    top: 320px; 
+    left: 120px; 
+    font-family:Verdana, Geneva, Tahoma, sans-serif; 
+    font-size: 20px;
+}
+
+
+.three-img{
+    position: absolute; 
+    top: 150px; 
+    left: 1110px;
+}
+.three-img img{
+    width: 310px; 
+    height: 310px;
+}
+.three-img img:hover{
+    transform: scale(1.1); 
+}
+.three-img figcaption{
+    color:black ;
+    position: absolute; 
+    top: 320px; 
+    left: 120px; 
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 20px;
+}
