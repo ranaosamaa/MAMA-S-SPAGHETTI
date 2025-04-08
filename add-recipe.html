@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><Add-Recipe></Add-Recipe></title>
+</head>
+<body style="background-color: #fff8f5;">
+    <form onsubmit="return empty()" style=" position: absolute; top: 150px;left: 578px;  width: 400px;height: 400px; padding: 20px; border: 2px solid #A82D00; border-radius: 20px; ">
+        <label style="font-family: Verdana, Geneva, Tahoma, sans-serif; font-size:x-large;color: #A82D00;"for="image" ><b>Image:</b></label>
+        <br/>
+        <br/>
+        <input type="file" id="image" >
+        <br/>
+        <label style="font-family: Verdana, Geneva, Tahoma, sans-serif;font-size:x-large;color: #A82D00;"for ="des"><b>Ingredients:</b></label>
+        <br/>
+        <textarea style="border-radius: 25px; border-color: #A82D00;"id="des" rows="4" cols="50" >  </textarea>
+        <br/>
+        <label style="font-family: Verdana, Geneva, Tahoma, sans-serif;font-size:x-large;color: #A82D00;"for ="des"><b>Description:</b></label>
+        <br/>
+        <textarea style="border-radius: 25px; border-color: #A82D00;"id="des" rows="6" cols="50" >  </textarea>
+        <br/>
+        <br/>
+        <label style="font-family: Verdana, Geneva, Tahoma, sans-serif;font-size:x-large;color: #A82D00;"for ="name"><b>Recipe Name:</b></label>
+        <input style="border-radius: 25px; border-color: #A82D00;"type="text" id="name"/>
+        <br/>
+        <button style="position: absolute; top: 380px;left: 150px;background-color: #A82D00; border-radius: 50px; width:120px;height:40px; "type="submit">Upload</button>
+    </form>
+    <script>
+        function empty(){
+            let image=document.getElementById("image").value;
+            let des=document.getElementById("des").value;
+            let name=document.getElementById("name").value;
+            if(image=="" || des=="" || name==""){
+            alert("Somethiing is missing, Please make sure all of the informations are complete ");
+            return false;
+            }else{
+                return true;
+            }
+        }
+    </script>
+
+</body>
+</html>

@@ -3,12 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/Recipes.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
 integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
 crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <title>Recipes-Sandwiches</title>
+    <title>Search</title>
+    <style>
+        body{
+            background-color: #fff8f5;
+        }
 
+        .search-box {
+            position: absolute;
+            top: 300px;
+            left: 350px;
+            display: flex;
+        }
+
+        .search-input {
+            border-radius: 10px;
+            width: 750px;
+            height: 30px;
+            padding-left: 10px;
+            font-size: 16px;
+            border-color: #fff8f5;
+        }
+
+        .search-button  {
+            border-radius: 10px;
+            font-size: 16px;
+            color: #fff8f5;
+            border-color: #fff8f5 ;
+            background-color: #A82D00;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
     <header class="navbar">
@@ -27,18 +55,12 @@ crossorigin="anonymous" referrerpolicy="no-referrer" />
             
         </nav>
     </header>
-    <figure class="one-img">
-    <a href="single-recipe.html"> <img src="assets/Ground Beef Grilled Cheese Sandwich.jpeg" alt="Grilled Cheese Beef Sandwich" /></a>
-    <figcaption>Ground Beef Grilled Cheese Sandwich</figcaption>
-    </figure>
-    <figure class="two-img">
-    <a href="single-recipe.html"> <img src="assets/Egg Salad Sandwich.jpeg" alt="Egg Salad Sandwich" /></a>
-    <figcaption>Egg Salad Sandwich</figcaption>
-    </figure>
-    <figure class="three-img">
-    <a href="single-recipe.html"> <img src="assets/Crispy Buffalo Chicken.jpeg" alt="Crispy Buffalo Chicken Sandwich" /></a>
-    <figcaption>Crispy Buffalo Chicken Sandwich</figcaption>
-    </figure>
+    <form class="search-box">
+        <input class="search-input" type="text" id="search" name="search" placeholder="Tomato, cucumber, etc...">
+        <button class="search-button" type="submit">
+            <i class="fas fa-search"></i>
+        </button>
+    </form>
     <footer id="about">
 
         <div class="footer-container">

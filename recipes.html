@@ -3,8 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+crossorigin="anonymous" referrerpolicy="no-referrer" />
   <title>Recipe List</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="./css/recipes.css">
   <style>
     html {
       scroll-behavior: smooth;
@@ -64,16 +67,31 @@
   </style>
 </head>
 <body>
-
+  <header class="navbar">
+    <a href="home.html"><img class ="logo" src="./assets/logo.svg" width="40"></a>
+    <nav>
+        <ul class="nav-links"> 
+            <li><a href="search.html">Search</a></li> 
+            <li><a href="recipes.html">Recipes</a></li>
+            <li><a href="history.html">History</a></li>
+            <li><a href="favorite.html">Favorites</a></li>
+            <li><a href="add-recipe.html">Add Recipe</i></a></li>
+            <li><a href="#about">About Us</a></li>
+            <li><a href="sign-index.html">Sign Up</a></li>
+            
+        </ul>
+        
+    </nav>
+</header>
   <h1>Sandwiches</h1>
   <div class="categories">
     <a href="#egg-salad" class="recipe-card">
-      <img src="egg sandwitch.jpg" alt="Egg Salad Sandwich">
+      <img src="./assets/Egg Salad Sandwich.jpeg" alt="Egg Salad Sandwich">
       <p class="description">Egg salad sandwich.</p>
     </a>
 
     <a href="#ground-beef" class="recipe-card">
-      <img src="grilled cheese.jpg" alt="Ground Beef Grilled Cheese">
+      <img src="./assets/Ground Beef Grilled Cheese Sandwich.jpeg" alt="Ground Beef Grilled Cheese">
       <p class="description">Juicy ground beef with melted cheese.</p>
     </a>
   </div>
@@ -81,12 +99,12 @@
   <h1>Salads</h1>
   <div class="categories">
     <a href="#caesar" class="recipe-card">
-      <img src="casear salad.jpg" alt="Caesar Salad">
+      <img src="./assets/Caesar Salad.jpeg" alt="Caesar Salad">
       <p class="description">Classic Caesar salad.</p>
     </a>
 
     <a href="#greek-salad" class="recipe-card">
-      <img src="greek salad.jpg" alt="Greek Salad">
+      <img src="./assets/Greek Salad.jpeg" alt="Greek Salad">
       <p class="description">Fresh healthy Greek salad.</p>
     </a>
   </div>
@@ -94,12 +112,12 @@
   <h1>Beef</h1>
   <div class="categories">
     <a href="#roasted-beef" class="recipe-card">
-      <img src="roasted beef.jpg" alt="Roasted Beef">
+      <img src="./assets/Roast Beef.jpeg" alt="Roasted Beef">
       <p class="description">Roasted beef slices.</p>
     </a>
 
     <a href="#crispy-potato" class="recipe-card">
-      <img src="potatos.jpg" alt="Crispy Potato">
+      <img src="./assets/crispy-potato.jpg" alt="Crispy Potato">
       <p class="description">Golden crispy potatoes</p>
     </a>
   </div>
@@ -107,12 +125,12 @@
   <h1>Chicken</h1>
   <div class="categories">
     <a href="#wings" class="recipe-card">
-      <img src="wings.jpg" alt="Wings">
+      <img src="./assets/Chicken Wings.jpeg" alt="Wings">
       <p class="description">Spicy and crispy chicken wings.</p>
     </a>
 
     <a href="#gyros" class="recipe-card">
-      <img src="gyros.jpg" alt="Greek Chicken Gyros">
+      <img src="./assets/Chicken Gyros.jpeg" alt="Greek Chicken Gyros">
       <p class="description">Grilled chicken</p>
     </a>
   </div>
@@ -120,12 +138,12 @@
   <h1>Desserts</h1>
   <div class="categories">
     <a href="#banana-pie" class="recipe-card">
-      <img src="bananas.jpg" alt="Banana Cream Pie">
+      <img src="./assets/Banana Tart.jpeg" alt="Banana Cream Pie">
       <p class="description">Banana pie</p>
     </a>
 
     <a href="#brownies" class="recipe-card">
-      <img src="brownies.jpg" alt="Brownies">
+      <img src="./assets/Brownies.jpeg" alt="Brownies">
       <p class="description">Chocolate brownies.</p>
     </a>
   </div>
@@ -180,6 +198,26 @@
     <h2>Brownies</h2>
     <ul><li>Mix ingredients, bake at 350°F in 8x8 pan. Cool and serve.</li></ul>
   </div>
+  <footer id="about">
+
+    <div class="footer-container">
+        <div class="social-icons">
+        <a href="https://www.facebook.com/"><i class="fa-brands fa-facebook"></i></a>
+        <a href="https://www.instagram.com/"><i class="fa-brands fa-instagram"></i></a>
+        <a href="https://github.com/"><i class="fa-brands fa-github"></i></a>
+        <a href="https://www.youtube.com/"><i class="fa-brands fa-youtube"></i></a>
+    </div>
+    <div class="footer-nav">
+        <ul>
+            <li><a href="home.html">Home</a></li>
+            <li><a href="recipes.html">Recipes</a></li>
+            <li><a href="sign-index.html">Sign In/Register</a></li>
+            <li><a href="favorite.html">Favorites</a></li>
+            
+        </ul>
+    </div>
+    </div>
+</footer>
 
 </body>
 </html>
