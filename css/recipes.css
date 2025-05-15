@@ -62,6 +62,8 @@
       transition:all 0.3s ease 0s;
       color:var(--backgroundcol); 
     }
+    .categories{
+    }
     footer{
       width:100%;
       position: relative;
@@ -122,11 +124,9 @@
     
 
 body{
-
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-  
     background-color: #fff8f5;
 }
 
