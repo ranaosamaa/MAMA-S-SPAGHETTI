@@ -1,91 +1,355 @@
-const cover = document.getElementById("cover");
-const moveBtn = document.getElementById("moveCover");
-const sign = document.getElementById("sign-up");
-const log = document.getElementById("sign-in");
-const covItems = document.getElementById("cov-items");
-const covtxt = document.querySelector(".cover h4");
-const showpass=document.getElementById("show");
+var users = [
+  {
+    name: "3azima",
+    img: "/images/azima.jpeg",
+    email: "asd1@gmail.com",
+    password: "12345",
+    phone: "0123456789",
+  },
+  {
+    name: "raafat",
+    img: "/images/azima.jpeg",
+    email: "asd2@gmail.com",
+    password: "12345",
+    phone: "0123456789",
+  }
+]
 
 
 
-let isMoved = false;
-moveBtn.addEventListener("click", () => {
-    if (!isMoved) {
-        cover.style.left = "50%";
-        isMoved = true;
-        covItems.style.opacity = 0;
-        covItems.style.transition = "opacity 250ms";
-        sign.style.opacity = 0;
-        sign.style.transition = "opacity 250ms";
-        setTimeout(() => {
-            log.style.opacity = 1;
-            log.style.transition = "opacity 250ms";
-            moveBtn.innerText = "Sign Up";
-            covtxt.innerText = "Create an Account";
-            covItems.style.opacity = 1;
-            covItems.style.transition = "opacity 250ms";
-        }, 500);
+
+var userNameAlert = document.getElementById("userNameAlert");
+var emailAlert = document.getElementById("emailAlert");
+var passwordAlert = document.getElementById("passwordAlert");
+var rePasswordAlert = document.getElementById("rePasswordAlert");
+
+var signUser = document.getElementById("signUser");
+var signEmail = document.getElementById("signEmail");
+var signPass = document.getElementById("signPass");
+var signRePass = document.getElementById("signRePass");
+
+var loginUserNameAlert = document.getElementById("loginUserNameAlert");
+var loginPasswordAlert = document.getElementById("loginPasswordAlert");
+
+var loginUser = document.getElementById("loginUser");
+var loginPass = document.getElementById("loginPass");
+
+
+
+
+var showPass = document.querySelectorAll(".showPass");
+
+var regex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+
+function passChecker() {
+  passwordAlert.style.color = "red";
+  var check = regex.test(signPass.value);
+  if (!signPass.value) {
+    passwordAlert.innerHTML = "This field is required";
+    signPass.classList.add("is-invalid");
+    signPass.classList.remove("is-valid");
+  }
+  else if (!check) {
+    passwordAlert.innerHTML = "Invalid Password";
+    signPass.classList.add("is-invalid");
+    signPass.classList.remove("is-valid");
+  } else {
+    passwordAlert.innerHTML = "";
+    signPass.classList.add("is-valid");
+    signPass.classList.remove("is-invalid");
+  }
+}
+function signRePassCheck(){
+  if(!signRePass.value){
+    rePasswordAlert.style.color = "red";
+    rePasswordAlert.innerHTML = "This field is required";
+      signRePass.classList.add("is-invalid");
+      signRePass.classList.remove("is-valid");
+  }
+}
+function passMatch() {
+  rePasswordAlert.style.color = "red";
+  var check = regex.test(signPass.value);
+  if (signRePass.value) {
+    if (!check || !signPass.value) {
+      rePasswordAlert.innerHTML = "Validate Password";
+      signRePass.classList.add("is-invalid");
+      signRePass.classList.remove("is-valid");
+    } else if (signRePass.value != signPass.value) {
+      rePasswordAlert.innerHTML = "Passwords don't match";
+      signRePass.classList.add("is-invalid");
+      signRePass.classList.remove("is-valid");
     } else {
-        cover.style.left = "0";
-        isMoved = false;
-        covItems.style.opacity = 0;
-        covItems.style.transition = "opacity 250ms";
-        log.style.opacity = 0;
-        log.style.transition = "opacity 250ms";
-        setTimeout(() => {
-            sign.style.opacity = 1;
-            sign.style.transition = "opacity 250ms";
-            moveBtn.innerText = "Login";
-            covtxt.innerText = "Already have an Account";
-            covItems.style.opacity = 1;
-            covItems.style.transition = "opacity 250ms";
-        }, 500);
+      rePasswordAlert.innerHTML = "";
+      signRePass.classList.add("is-valid");
+      signRePass.classList.remove("is-invalid");
     }
-});
+  }
+}
+function showUnPass(e) {
+  const targetId = e.getAttribute("data-target");
+  const inputField = document.getElementById(targetId);
+  const type = inputField.getAttribute("type");
+  inputField.setAttribute("type", type === "password" ? "text" : "password");
+  e.classList.contains("fa-eye") ? e.classList.replace("fa-eye", "fa-eye-slash") : e.classList.replace("fa-eye-slash", "fa-eye");
+}
+function userAvailable() {
+      userNameAlert.style.color = "red";
+  if (!signUser.value) {
+    userNameAlert.innerHTML = "This field is required";
+    signUser.classList.add("is-invalid");
+    signUser.classList.remove("is-valid");
+    return;
+  }
+  const exists = users.some(
+    user => user.name.toLowerCase() === signUser.value.toLowerCase()
+  );
 
+  if (exists) {
+    userNameAlert.innerHTML = "Username is taken";
+    signUser.classList.add("is-invalid");
+    signUser.classList.remove("is-valid");
+  } else {
+    userNameAlert.innerHTML = "";
+    signUser.classList.add("is-valid");
+    signUser.classList.remove("is-invalid");
+  }
+}
 
+function emailAvailable(){
+  emailAlert.style.color = "red";
+  if (!signEmail.value) {
+    emailAlert.innerHTML = "This field is required";
+    signEmail.classList.add("is-invalid");
+    signEmail.classList.remove("is-valid");
+    return;
+  }
 
-const showIcons = document.querySelectorAll(".show");
-showIcons.forEach(icon => {
-  icon.addEventListener("click", () => {
-    const input = icon.previousElementSibling;
-    if (input.type === "password") {
-      input.type = "text";
-    } else {
-      input.type = "password";
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  if (!emailRegex.test(signEmail.value)) {
+    emailAlert.innerHTML = "Invalid email format";
+    signEmail.classList.add("is-invalid");
+    signEmail.classList.remove("is-valid");
+    return;
+  }
+
+  const exists = users.some(user => user.email === signEmail.value);
+
+  if (exists) {
+    emailAlert.innerHTML = "Email already exists";
+    signEmail.classList.add("is-invalid");
+    signEmail.classList.remove("is-valid");
+  } else {
+    emailAlert.innerHTML = "";
+    signEmail.classList.add("is-valid");
+    signEmail.classList.remove("is-invalid");
+  }
+  
+}
+function userExist() {
+  loginUserNameAlert.style.color = "red";
+  let userFound = false;
+  if (!loginUser.value) {
+    loginUserNameAlert.innerHTML = "This field is required";
+    loginUser.classList.add("is-invalid");
+    loginUser.classList.remove("is-valid");
+    return;
+  }
+  users.forEach(user => {
+    if (user.name.toLowerCase() === loginUser.value.toLowerCase()) {
+      loginUserNameAlert.innerHTML = "";
+      loginUser.classList.add("is-valid");
+      loginUser.classList.remove("is-invalid");
+      userFound = true;
     }
-    icon.classList.toggle("fa-eye-slash");
-    icon.classList.toggle("fa-eye");
   });
+  if (!userFound) {
+    loginUserNameAlert.innerHTML = "Username doesn't exist";
+    loginUser.classList.remove("is-valid");
+    loginUser.classList.add("is-invalid");
+  }
+}
+
+function rightPass() {
+  loginPasswordAlert.style.color = "red";
+  if (!loginPass.value) {
+    loginPasswordAlert.innerHTML = "This field is required";
+    loginPass.classList.add("is-invalid");
+    loginPass.classList.remove("is-valid");
+    return;
+  }
+  if (!loginUser.value) {
+    loginPasswordAlert.innerHTML = "Fill Username Field";
+    loginPass.classList.remove("is-valid");
+    loginPass.classList.add("is-invalid");
+    return;
+  }
+
+  let user = users.find(u => u.name.toLowerCase() === loginUser.value.toLowerCase());
+  if (!user) {
+    loginPasswordAlert.innerHTML = "Check Username";
+    loginPass.classList.remove("is-valid");
+    loginPass.classList.add("is-invalid");
+    return;
+  }
+
+  if (loginPass.value != user.password) {
+    loginPasswordAlert.innerHTML = "Username or Password is incorrect";
+    loginPass.classList.remove("is-valid");
+    loginPass.classList.add("is-invalid");
+  } else {
+    loginPasswordAlert.innerHTML = "";
+    loginPass.classList.add("is-valid");
+    loginPass.classList.remove("is-invalid");
+  }
+}
+
+
+signUser.addEventListener("blur", (e) => userAvailable());
+signUser.addEventListener("input", (e) => userAvailable());
+
+signEmail.addEventListener("blur", (e) => emailAvailable());
+signEmail.addEventListener("input", (e) => emailAvailable());
+
+signPass.addEventListener("blur", (e) => passChecker());
+signPass.addEventListener("input", (e) => {
+  passChecker();
+  passMatch();
 });
 
+signRePass.addEventListener("blur", (e) => {
+  signRePassCheck();
+  passMatch();
+});
+signRePass.addEventListener("input", () => {
+  signRePassCheck();
+  passMatch();
+});
+
+loginUser.addEventListener("blur", (e) => userExist());
+loginUser.addEventListener("input", (e) => userExist());
+
+loginPass.addEventListener("blur", (e) => rightPass());
+loginPass.addEventListener("input", (e) => rightPass());
 
 
-const signform=document.getElementById("sign-form");
-signform.addEventListener("submit", (e) => {
-const pass = document.getElementById("pass").value;
-const repass = document.getElementById("repass").value;
+showPass.forEach(show => {
+  show.addEventListener("click", () => showUnPass(show));
+});
 
-function valid(p){
-  const regex = /^(?=(.*[A-Z]))(?=(.*[\W_]))(?=.{8,})/;
-  return regex.test(p);
-}
-  if(!valid(pass)){
-    e.preventDefault();
-    alert("The password doesn't meet the requirments");
-  }
-  if (pass !== repass) {
-    e.preventDefault();
-    alert("Passwords do not match. Please try again.");
+var signForm = document.getElementById("signForm");
+var loginForm = document.getElementById("loginForm");
+const switchers = document.querySelectorAll(".switch");
+
+switchers.forEach(sw => {
+  sw.addEventListener("click", e => {
+    signUser.value = "";
+    signEmail.value = "";
+    signPass.value = "";
+    signRePass.value = "";
+    loginUser.value = "";
+    loginPass.value = "";
+
+    signUser.classList.remove("is-valid");
+    signUser.classList.remove("is-invalid");
+    signEmail.classList.remove("is-valid");
+    signEmail.classList.remove("is-invalid");
+    signPass.classList.remove("is-valid");
+    signPass.classList.remove("is-invalid");
+    signRePass.classList.remove("is-valid");
+    signRePass.classList.remove("is-invalid");
+    loginPass.classList.remove("is-valid");
+    loginPass.classList.remove("is-invalid");
+    signUser.classList.remove("is-valid");
+    signUser.classList.remove("is-invalid");
+
+    userNameAlert.innerHTML = "";
+    emailAlert.innerHTML = "";
+    passwordAlert.innerHTML = "";
+    rePasswordAlert.innerHTML = "";
+    loginUserNameAlert.innerHTML = "";
+    loginPasswordAlert.innerHTML = "";
+
+    signPass.setAttribute("type","password");
+    signRePass.setAttribute("type","password");
+    loginPass.setAttribute("type","password");
+
+    showPass.forEach(show=>{
+      if(show.classList.contains("fa-eye-slash"))
+        show.classList.replace("fa-eye-slash","fa-eye")
+    })
+  })
+  if (window.innerWidth > 928) {
+    sw.addEventListener("click", e => {
+      if (loginForm.classList.contains("d-none")) {
+        setTimeout(() => signForm.classList.add("d-none"), 500);
+        signForm.style.opacity = 0;
+        loginForm.classList.remove("d-none");
+        loginForm.style.opacity = 1;
+      } else {
+        signForm.classList.remove("d-none");
+        signForm.style.opacity = 1;
+        setTimeout(() => loginForm.classList.add("d-none"), 500);
+        loginForm.style.opacity = 0;
+      }
+    });
+  } else {
+    sw.addEventListener("click", e => {
+      if (loginForm.classList.contains("d-none")) {
+        setTimeout(() => signForm.classList.add("d-none"), 500);
+        signForm.style.opacity = 0;
+        setTimeout(() => {
+          loginForm.classList.remove("d-none");
+          loginForm.style.opacity = 1;
+        }, 500)
+      } else {
+        setTimeout(() => {
+          signForm.classList.remove("d-none");
+          signForm.style.opacity = 1;
+        }, 500)
+        setTimeout(() => loginForm.classList.add("d-none"), 500);
+        loginForm.style.opacity = 0;
+      }
+    });
   }
 });
 
+var changediv = document.querySelector(".changediv");
+var changedivP = document.querySelector(".changediv p");
+var changedivH2 = document.querySelector(".changediv h2");
+var changedivBtn = document.querySelector(".changediv button");
 
-const loginform=document.getElementById("login-form");
-loginform.addEventListener("submit", (e) => {
-const logpass = document.getElementById("pass-log").value;
-if(logpass!=="12345"){
-  e.preventDefault();
-  alert("Wrong Password, Please try again.");
-}
+let isRight = true;
+switchers.forEach(sw => {
+  sw.addEventListener("click", () => {
+    if (isRight) {
+      changediv.style.right = "33.333334%";
+      changedivP.style.opacity=0;
+      changedivH2.style.opacity=0;
+      changedivBtn.style.opacity=0;
+      setTimeout(() => {
+        changedivP.style.opacity=1;
+        changedivH2.style.opacity=1;
+        changedivBtn.style.opacity=1;
+      }, 500);
+      changedivH2.innerHTML = "Join the Family!";
+      changedivP.innerHTML = "New here? Join the MaMa’s Spaghetti family today!";
+      changedivBtn.innerHTML = "Sign Up";
+    } else {
+      changediv.style.right = "0%";
+      changedivP.style.opacity=0;
+      changedivH2.style.opacity=0;
+      changedivBtn.style.opacity=0;
+      setTimeout(() => {
+        changedivP.style.opacity=1;
+        changedivH2.style.opacity=1;
+        changedivBtn.style.opacity=1;
+      }, 500);
+      changedivH2.innerHTML = "Welcome Back!";
+      changedivP.innerHTML = "We're glad to see you again. Log in to your MaMa’s Spaghetti account";
+      changedivBtn.innerHTML = "Login";
+    }
+    isRight = !isRight;
+  });
 });

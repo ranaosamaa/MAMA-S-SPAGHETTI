@@ -37,18 +37,21 @@
                         <a class="nav-link" href="/#services">Services</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/#recipes">Recipes</a>
+                        <a class="nav-link" href="recipes">Recipes</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/#contact">Contact</a>
                     </li>
-                    <li class="nav-item active" >
+                    <li class="nav-item active">
                         <% if (user) { %>
-                            <a class="nav-link" href="profile" ><img class="prf-nav rounded-circle" src="<%=user.img%>"
+                            <a class="nav-link" href="profile"><img class="prf-nav rounded-circle" src="<%=user.img%>"
                                     alt="user-img"></a>
                             <% } else { %>
                                 <a class="nav-link" href="#sign">Sign Up</a>
                                 <% } %>
+                    </li>
+                    <li class="nav-item">
+                        <i class="fa-solid fa-moon fa-lg" id="darkModeToggle"></i>
                     </li>
                 </ul>
             </div>
@@ -67,7 +70,7 @@
                 <div class="logo-box pt-3 px-2">
                     <a href="/"><img src="/images/logo.png" alt="" class="w-100"></a>
                 </div>
-                <div class="icon btn btn-outline-dark"  data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                <div class="icon btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
                     <i class="fa-solid fa-user"></i>
                 </div>
                 <a href="#favorites">
@@ -84,60 +87,60 @@
 
 
             <div class="modal fade service-modal" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false"
-        tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="staticBackdropLabel">New Recipe</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="recipeForm">
-                        <div>
-                            <label for="RecipeImg" class="col-form-label">Recipe's image :</label>
-                            <input type="file" name="RecipeImg" id="RecipeImg" class="w-100 rounded-2 mt-2"
-                                accept="image/*" required>
+                tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="staticBackdropLabel">New Recipe</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <div class="mb-3">
-                            <label for="RecipeName" class="col-form-label"></label>
-                            <input type="text" class="form-control" id="RecipeName" name="RecipeName"
-                                placeholder="Recipe for" required>
-                        </div>
-                        <div class="mb-3 d-flex">
-                            <label for="Ingredients" class="col-form-label"></label>
-                            <input type="text" class="form-control me-2" id="Ingredients" name="Ingredients"
-                                placeholder="Ingredients">
-                            <button class="btn btn-outline-dark" id="addIngBtn" disabled>+</button>
-                        </div>
-                        <div class="ings mb-3 d-flex flex-wrap" id="ings">
+                        <div class="modal-body">
+                            <form id="recipeForm">
+                                <div>
+                                    <label for="RecipeImg" class="col-form-label">Recipe's image :</label>
+                                    <input type="file" name="RecipeImg" id="RecipeImg" class="w-100 rounded-2 mt-2"
+                                        accept="image/*" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="RecipeName" class="col-form-label"></label>
+                                    <input type="text" class="form-control" id="RecipeName" name="RecipeName"
+                                        placeholder="Recipe for" required>
+                                </div>
+                                <div class="mb-3 d-flex">
+                                    <label for="Ingredients" class="col-form-label"></label>
+                                    <input type="text" class="form-control me-2" id="Ingredients" name="Ingredients"
+                                        placeholder="Ingredients">
+                                    <button class="btn btn-outline-dark" id="addIngBtn" disabled>+</button>
+                                </div>
+                                <div class="ings mb-3 d-flex flex-wrap" id="ings">
 
+                                </div>
+                                <div class="mb-3">
+                                    <label for="RecipeDescription" class="col-form-label"></label>
+                                    <textarea class="form-control" id="RecipeDescription" placeholder="Description"
+                                        name="RecipeDescription" required></textarea>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Cancel</button>
+                                    <button type="submit" class="btn btn-outline-dark" id="addRecBtn"
+                                        data-bs-dismiss="modal" disabled>Add Recipe</button>
+                                </div>
+                            </form>
                         </div>
-                        <div class="mb-3">
-                            <label for="RecipeDescription" class="col-form-label"></label>
-                            <textarea class="form-control" id="RecipeDescription" placeholder="Description"
-                                name="RecipeDescription" required></textarea>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Cancel</button>
-                            <button type="submit" class="btn btn-outline-dark" id="addRecBtn" data-bs-dismiss="modal"
-                                disabled>Add Recipe</button>
-                        </div>
-                    </form>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
 
             <div class="info w-75 p-4 h-100 bg2 rounded-4">
                 <div class="row g-4">
                     <div class="col-lg-4 d-flex flex-column gap-3">
-                        <div class="inner bg-white p-2 shadow rounded-2">
+                        <div class="inner p-2 shadow rounded-2">
                             <div class="img-box overflow-hidden w-100 rounded-2">
                                 <img src="<%=user.img%>" alt="" class="w-100">
                             </div>
                         </div>
 
-                        <div class="body-box bg-white p-2 shadow rounded-2 d-flex flex-column gap-3">
+                        <div class="body-box p-2 shadow rounded-2 d-flex flex-column gap-3">
                             <div class="name">
                                 <p><span class="fw-bold">Name: </span>
                                     <%=user.name%>
@@ -162,7 +165,7 @@
                     </div>
 
                     <div class="col-lg-8">
-                        <div class="inner bg-white p-2 shadow rounded-2">
+                        <div class="inner p-2 shadow rounded-2">
                             <div class="top">
                                 <h2>Profile</h2>
                             </div>
@@ -270,6 +273,7 @@
         </div>
     </footer>
 
+    <script src="/js/darkMood.js"></script>
     <script src="/js/bootstrap.bundle.min.js"></script>
     <script src="/js/script.js"></script>
 </body>

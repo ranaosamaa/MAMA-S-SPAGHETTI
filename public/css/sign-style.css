@@ -1,125 +1,68 @@
-*{
-    box-sizing: border-box;
-    margin: 0;
-    font-family: "Roboto", sans-serif;
-}
+
 body{
-    background-image: url(assets\tasty-pizza-near-ingredients.jpg);
-    background-repeat: none;
-    background-size: cover;
-    background-position: center;
+    background-color: #000;
 }
-.blr{
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    background-color: #2e2c2a8e;
-    height: 100vh;
-}
-.container{
-    z-index: 3;
-    width: 70%;
-    margin: 2% auto;
-    text-align: center;
-    overflow: hidden;
-    border-radius: 50px;
-    background-color: #2e2c2a;
-    position: relative;
-    box-shadow: 0px 10px 10px #a82d0086;
-}
-h2{
-    font-size: 42px;
-    color: #a82d00;
-}
-.clear-fix{
-    clear: both;
-}
-.sign-in,.sign-up{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 50%;
-    float: left;
-    margin: 7% 0;
-}
-form{
-    margin: 25% 0;
-}
-form input ,form button{
-    padding: 10px;
-    border-radius: 5px;
-    outline: 1px solid #44413df8; 
-    margin: 2% auto;
-    width: 90%;
-    background-color: #2e2c2a;
-    border: 0;
-    color: #fff;
-}
-.sign-in input ,.sign-in button{
-    width:200%;
-    transform: translateX(-25%);
-    margin: 4% auto;
-}
-form input:focus{
-    outline: 2px solid #a82d00; 
-}
-form button{
-    background-color: #a82d00;
-    color: #2e2c2a;
-    font-weight: 600;
-}
-.cover{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 5;
-    border-radius: 50px;
-    position: absolute;
-    width: 50%;
+.sign .container{
     height: 100%;
-    top: 0;
-    left: 0;
-    background-color: #a82d00;
-    transition: 1s;
-    color: #2e2c2a;
 }
-.switch{
+.sign .container .row{
+    backdrop-filter: blur(9px);
+}
+.arrow{
+    color: white;
     cursor: pointer;
-    font-size: 42px;
-    font-weight: 600;
-    padding: 0 20px;
-    color: #a82d00;
-    border: 0;
-    border-radius: 200px;
-    background-color: #2e2c2a;
+    transition: .5s;
 }
-.icons i{
-    padding: 0 15px;
-    color: #2e2c2a;
+.arrow:hover{
+    color: var(--main-c);
+    transition: .5s;
 }
-.icons{
-    position: absolute;
-    bottom: 100px;
-    left: 0;
+.changediv{
+    background: var(--main-c);
+    right: 0%;
+    transition: .5s;
+    z-index: 10;
+}
+.changediv h2{
+    font-size: 100px;
+}
+.changediv p{
+    color: var(--text-s);
+}
+
+.changediv button,
+.changediv p,
+.changediv h2{
+    transition: .5s;
+    opacity: 1;
+}
+.showPass{
+    color: var(--main-c);
+    margin-right: -30px;
+    cursor: pointer;
+}
+.forgetPass{
+    color: var(--main-c);
+}
+#signForm , #loginForm{
+    transition: all .5s;
+}
+#signForm {
+    opacity: 1;
+}
+#loginForm{
+    opacity: 0;
+}
+@media screen and (min-width:768px){
+.sign{
+    background-image:linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(/images/tasty-pizza-near-ingredients.jpg) ;
+    background-position: center;
+    background-size: cover;
+    background-attachment: fixed;
+    height: 91.5vh;
+}
+#loginForm{
     right: 0;
-}
-.cover h4{
-    padding: 20px;
-    font-size: 25px;
-    font-weight: 800;
-}
-.pass-container{
-    position: relative;
-}
-form i{
-    color: #a82d00;
-    cursor: pointer;
     position: absolute;
-    left:87%;
-    top: 50%;
-    transform: translateY(-50%);
 }
-.sign-in i{
-    left:135%;
 }

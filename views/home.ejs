@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="light">
 
 <head>
     <meta charset="UTF-8">
@@ -16,7 +16,7 @@
 </head>
 
 <body data-bs-spy="scroll" data-bs-target="#navId">
-    <nav class="navbar navbar-expand-lg text-black position-fixed w-100 z-2 " id="navId">
+    <nav class="navbar navbar-expand-lg text-black position-fixed w-100 z-2 bg1" id="navId">
         <div class="container">
             <a class="navbar-brand fw-bold text-uppercase" href="#"><img src="/images/logo.png" alt="logo"> MaMa's
                 Spaghetti</a>
@@ -49,6 +49,9 @@
                                 <a class="nav-link" href="#sign">Sign Up</a>
                                 <% } %>
                     </li>
+                    <li class="nav-item">
+                        <i class="fa-solid fa-moon fa-lg" id="darkModeToggle"></i>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -61,7 +64,7 @@
         </div>
     </section>
 
-    <section class="about" id="about" data-scroll-index="1">
+    <section class="about bg1" id="about" data-scroll-index="1">
         <div class="container">
             <div class="row g-4">
                 <div class="col-xl-4">
@@ -180,11 +183,11 @@
             <a href="profile"><img class="rounded-circle border border-5 border-light" src="<%=user.img%>" alt="user-img"></a>
             <% } else { %>
                 <h3 class="fs-1">Don't Have an Account yet!</h3>
-                <a href="/sign-index.html" class="btn btn-outline-dark">Sign-up</a>
+                <a href="signLogin" class="btn btn-outline-dark">Sign-up</a>
                 <% } %>
     </section>
 
-    <section class="recipes" id="recipes" data-scroll-index="3">
+    <section class="recipes bg1" id="recipes" data-scroll-index="3">
         <div class="container">
             <div class="top">
                 <h2>Recipes</h2>
@@ -298,6 +301,7 @@
         </div>
     </footer>
 
+    <script src="/js/darkMood.js"></script>
     <script src="/js/bootstrap.bundle.min.js"></script>
     <script src="/js/script.js"></script>
 </body>

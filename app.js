@@ -45,14 +45,21 @@ const recipes = [
     title: "Cheesecake",
     img: "/images/Cheesecake.jpeg",
     url: "/recipes/cheesecake",
+    ingrediants: "Salt Pepper",
   },
   {
     title: "Banana Tart",
     img: "/images/Banana Tart.jpeg",
     url: "/recipes/banana-tart",
+    ingrediants: "Sugar Banana",
   },
+  {
+    title: "Banana Tart",
+    img: "/images/Banana Tart.jpeg",
+    url: "/recipes/banana-tart",
+    ingrediants: "Salt Pepper",
+  }
 ];
-
 function getRandomRecipes(arr,x) {
   const newArr = [];
   for (var i = 0; i < x; i++) {
@@ -67,10 +74,16 @@ function getRandomRecipes(arr,x) {
 
 app.get("/", (req, res) => {
   const randomRecipes = getRandomRecipes(recipes,2);
-  res.render("home", { recipes: randomRecipes, user: fakeUser });
+  res.render("home", { recipes: randomRecipes,user:null });
 });
 app.get("/profile", (req, res) => {
   const randomRecipes = getRandomRecipes(recipes,1);
   res.render("profile", { recipes: randomRecipes,user: fakeUser2 });
+});
+app.get("/recipes", (req, res) => {
+  res.render("recipes", { recipes: recipes,user: null });
+});
+app.get("/signLogin", (req, res) => {
+  res.render("signLogin",{user: null });
 });
 app.listen(3000, () => console.log("Server running on http://localhost:3000"));

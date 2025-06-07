@@ -1,5 +1,5 @@
 .welcome{
-    background-image: linear-gradient(#d65d00c4), url(/images/10351122_4452317.jpg);
+    background-image: linear-gradient(var(--bgi-c)), url(/images/10351122_4452317.jpg);
     background-position: center;
     background-size: cover;
     height: 50vh;
@@ -42,21 +42,9 @@
     scale: 1.2;
     transition: .5s;
 }
-.card h5{
-    transition: .5s;
-}
 .card span{
     color: var(--main-c);
 }
-.card h5:hover{
-    color: var(--main-c);
-    transition: .5s;
-}
-.info .btns .btn:hover{
-    background: var(--main-c);
-    color: #fff;
-}
-
 
 .favorites .card .img-box,.addedR .card .img-box{
     height: 500px;

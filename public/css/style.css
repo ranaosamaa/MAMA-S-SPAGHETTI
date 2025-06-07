@@ -44,15 +44,6 @@
         right: 0px;
     }
 }
-.services .btn.btn-outline-dark:hover {
-    --bs-btn-hover-bg:var(--main-c);
-}
-.services .btn.btn-outline-dark a{
-    color: #000;
-}
-.services .btn.btn-outline-dark:hover a{
-    color: #fff;
-}
 .service-modal input,.service-modal textarea{
     outline: 1px solid #000;
 }
@@ -71,7 +62,7 @@
 
 
 .sign_reminder{ 
-    background-image: linear-gradient(#d65d00c4), url(/images/10351122_4452317.jpg);
+    background-image: linear-gradient(var(--bgi-c)), url(/images/10351122_4452317.jpg);
     background-position: center;
     background-size: cover;
 }
@@ -97,6 +88,7 @@
 }
 .recipes .card h5{
     transition: .5s;
+    color: var(--text-c);;
 }
 .recipes .card span{
     color: var(--main-c);
@@ -121,7 +113,6 @@
     transition: .3s;
 }
 .contact input,textarea{
-    background-color: #fff;
     outline: 1px solid #000;
 }
 .contact .btn.btn-outline-dark:hover {
