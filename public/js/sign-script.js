@@ -205,7 +205,6 @@ function rightPass() {
   }
 }
 
-
 signUser.addEventListener("blur", (e) => userAvailable());
 signUser.addEventListener("input", (e) => userAvailable());
 
@@ -332,10 +331,10 @@ switchers.forEach(sw => {
         changedivP.style.opacity=1;
         changedivH2.style.opacity=1;
         changedivBtn.style.opacity=1;
+        changedivH2.innerHTML = "Join the Family!";
+        changedivP.innerHTML = "New here? Join the MaMa’s Spaghetti family today!";
+        changedivBtn.innerHTML = "Sign Up";
       }, 500);
-      changedivH2.innerHTML = "Join the Family!";
-      changedivP.innerHTML = "New here? Join the MaMa’s Spaghetti family today!";
-      changedivBtn.innerHTML = "Sign Up";
     } else {
       changediv.style.right = "0%";
       changedivP.style.opacity=0;
@@ -345,10 +344,10 @@ switchers.forEach(sw => {
         changedivP.style.opacity=1;
         changedivH2.style.opacity=1;
         changedivBtn.style.opacity=1;
+        changedivH2.innerHTML = "Welcome Back!";
+        changedivP.innerHTML = "We're glad to see you again. Log in to your MaMa’s Spaghetti account";
+        changedivBtn.innerHTML = "Login";
       }, 500);
-      changedivH2.innerHTML = "Welcome Back!";
-      changedivP.innerHTML = "We're glad to see you again. Log in to your MaMa’s Spaghetti account";
-      changedivBtn.innerHTML = "Login";
     }
     isRight = !isRight;
   });

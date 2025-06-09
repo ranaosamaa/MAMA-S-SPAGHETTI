@@ -37,7 +37,7 @@
                         <a class="nav-link" href="/#services">Services</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="recipes">Recipes</a>
+                        <a class="nav-link" href="/recipes">Recipes</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/#contact">Contact</a>
@@ -47,7 +47,7 @@
                             <a class="nav-link" href="profile"><img class="prf-nav rounded-circle" src="<%=user.img%>"
                                     alt="user-img"></a>
                             <% } else { %>
-                                <a class="nav-link" href="#sign">Sign Up</a>
+                                <a class="nav-link" href="/signLogin">Sign Up</a>
                                 <% } %>
                     </li>
                     <li class="nav-item">
@@ -170,20 +170,39 @@
                                 <h2>Profile</h2>
                             </div>
                             <div class="last-viewed">
+                                <%if(user.lastViewed.title){%>
                                 <h5>Last Viewed Recipe</h5>
+                                <div class="card shadow">
+                                    <div class="img-box overflow-hidden">
+                                        <img src="<%= user.lastViewed.img %>" alt="<%= user.lastViewed.title %>">
+                                    </div>
+                                    <div class="card-body">
+                                        <a href="recipeViewed/<%= user.lastViewed.title %>"
+                                            class="text-black text-decoration-none d-flex justify-content-between">
+                                            <h5 class="card-title">
+                                                <%= user.lastViewed.title %>
+                                            </h5>
+                                            <span>View Recipe <i class="fa-solid fa-arrow-right"></i></span>
+                                        </a>
+                                    </div>
+                                </div>
+                                <%}else{%>
+                                <h5>Try this Recipe</h5>
                                 <div class="card shadow">
                                     <div class="img-box overflow-hidden">
                                         <img src="<%= recipes[0].img %>" alt="<%= recipes[0].title %>">
                                     </div>
                                     <div class="card-body">
-                                        <a href="recipes"
+                                        <a href="recipeViewed/<%=recipes[0].title%>"
                                             class="text-black text-decoration-none d-flex justify-content-between">
                                             <h5 class="card-title">
                                                 <%= recipes[0].title %>
-                                            </h5><span>View Recipe <i class="fa-solid fa-arrow-right"></i></span>
+                                            </h5>
+                                            <span>View Recipe <i class="fa-solid fa-arrow-right"></i></span>
                                         </a>
                                     </div>
                                 </div>
+                                <%}%>
                             </div>
                             <div class="btns py-4 d-flex flex-column flex-lg-row gap-3">
                                 <button class="btn btn-outline-dark">Edit Profile</button>

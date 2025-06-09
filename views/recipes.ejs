@@ -79,24 +79,25 @@
   <section class="recipes" id="recipes" data-scroll-index="3">
     <div class="container">
       <div class="row g-4">
-        <% for(var i=0;i<recipes.length;i++){ %>
+        <% recipes.forEach(recipe=>{ %>
           <div class="col-xl-4 col-md-6">
             <div class="inner">
               <div class="card shadow">
                 <div class="img-box overflow-hidden">
-                  <img src="<%= recipes[i].img %>" alt="<%= recipes[i].title %>">
+                  <img src="<%= recipe.img %>" alt="<%= recipe.title %>">
                 </div>
                 <div class="card-body">
-                  <a href="recipes" class="text-black text-decoration-none d-flex justify-content-between">
+                  <a href="recipeViewed/<%= recipe.title %>" class="text-black text-decoration-none d-flex justify-content-between">
                     <h5 class="card-title">
-                      <%= recipes[i].title %>
-                    </h5><span>View Recipe <i class="fa-solid fa-arrow-right"></i></span>
+                      <%= recipe.title %>
+                    </h5>
+                    <span>View Recipe <i class="fa-solid fa-arrow-right"></i></span>
                   </a>
                 </div>
               </div>
             </div>
           </div>
-          <% } %>
+          <% }) %>
       </div>
     </div>
   </section>

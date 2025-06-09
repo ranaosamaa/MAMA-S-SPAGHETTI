@@ -106,7 +106,7 @@
                     a specific dish name or individual ingredients. Whether you’re craving something particular or just
                     trying to use up what’s in your fridge, our smart search helps you discover delicious recipes that
                     match exactly what you have on hand</p>
-                <button class="btn btn-outline-dark"><a href="recipes.ejs" class=" text-decoration-none">Search for a
+                <button class="btn btn-outline-dark"><a href="recipes" class=" text-decoration-none">Search for a
                         Recipe</a></button>
             </div>
             <img src="/images/hero-img.png" alt="mid-service" class="mid-service">
@@ -201,7 +201,7 @@
                                 <img src="<%= recipes[i].img %>" alt="<%= recipes[i].title %>">
                             </div>
                             <div class="card-body">
-                                <a href="recipes"
+                                <a href="recipeViewed/<%=recipes[i].title%>"
                                     class="text-black text-decoration-none d-flex justify-content-between">
                                     <h5 class="card-title"><%= recipes[i].title %></h5><span>View Recipe <i
                                             class="fa-solid fa-arrow-right"></i></span>

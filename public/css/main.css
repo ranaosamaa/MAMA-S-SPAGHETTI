@@ -135,7 +135,10 @@ section{
     font-size: 14px;
 }
 .navbar .nav-link img{
-    width: 30px;
+    width: 35px;
+    height: 35px;
+    object-fit: cover;
+    object-position: center;
 }
 .navbar .nav-link.active{
     color: var(--main-c);

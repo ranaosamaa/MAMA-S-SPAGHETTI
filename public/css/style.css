@@ -67,7 +67,10 @@
     background-size: cover;
 }
 .sign_reminder img{
-    width: 200px;
+    width: 250px;
+    aspect-ratio: 1;
+    object-fit: cover;
+    object-position: center;
 }
 
 
@@ -75,30 +78,6 @@
 .recipes .card .img-box{
     height: 500px;
 }
-.recipes .card .img-box img{
-    transition: .5s;
-    object-fit: cover;
-    object-position: center;
-    width: 100%;
-    height: 100%;
-}
-.recipes .card .img-box img:hover{
-    scale: 1.2;
-    transition: .5s;
-}
-.recipes .card h5{
-    transition: .5s;
-    color: var(--text-c);;
-}
-.recipes .card span{
-    color: var(--main-c);
-}
-.recipes .card h5:hover{
-    color: var(--main-c);
-    transition: .5s;
-}
-
-
 
 
 .contact .icon {
