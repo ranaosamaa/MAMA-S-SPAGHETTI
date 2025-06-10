@@ -13,6 +13,7 @@ var recipes = [
       "Salt",
       "Pepper"
     ],
+    description:"asdsdasasdasdasda"
   },
   {
     title: "Banana Tart",
@@ -22,6 +23,7 @@ var recipes = [
       "Salt",
       "Pepper"
     ],
+    description:"asdsdasasdasdasda"
   },
   {
     title: "Banana Tart2",
@@ -31,6 +33,97 @@ var recipes = [
       "Sugar",
       "Banana"
     ],
+    description:"asdsdasasdasdasda"
+  },
+  {
+    title: "Banana Tart2",
+    img: "/images/Banana Tart.jpeg",
+    url: "/recipes/banana-tart",
+        ingrediants: [
+      "Sugar",
+      "Banana"
+    ],
+    description:"asdsdasasdasdasda"
+  },
+  {
+    title: "Banana Tart2",
+    img: "/images/Banana Tart.jpeg",
+    url: "/recipes/banana-tart",
+        ingrediants: [
+      "Sugar",
+      "Banana"
+    ],
+    description:"asdsdasasdasdasda"
+  },
+  {
+    title: "Banana Tart2",
+    img: "/images/Banana Tart.jpeg",
+    url: "/recipes/banana-tart",
+        ingrediants: [
+      "Sugar",
+      "Banana"
+    ],
+    description:"asdsdasasdasdasda"
+  },
+  {
+    title: "Banana Tart2",
+    img: "/images/Banana Tart.jpeg",
+    url: "/recipes/banana-tart",
+        ingrediants: [
+      "Sugar",
+      "Banana"
+    ],
+    description:"asdsdasasdasdasda"
+  },
+  {
+    title: "Banana Tart2",
+    img: "/images/Banana Tart.jpeg",
+    url: "/recipes/banana-tart",
+        ingrediants: [
+      "Sugar",
+      "Banana"
+    ],
+    description:"asdsdasasdasdasda"
+  },
+  {
+    title: "Banana Tart2",
+    img: "/images/Banana Tart.jpeg",
+    url: "/recipes/banana-tart",
+        ingrediants: [
+      "Sugar",
+      "Banana"
+    ],
+    description:"asdsdasasdasdasda"
+  },
+  {
+    title: "Banana Tart2",
+    img: "/images/Banana Tart.jpeg",
+    url: "/recipes/banana-tart",
+        ingrediants: [
+      "Sugar",
+      "Banana"
+    ],
+    description:"asdsdasasdasdasda"
+  },
+  {
+    title: "Banana Tart2",
+    img: "/images/Banana Tart.jpeg",
+    url: "/recipes/banana-tart",
+        ingrediants: [
+      "Sugar",
+      "Banana"
+    ],
+    description:"asdsdasasdasdasda"
+  },
+  {
+    title: "Banana Tart2",
+    img: "/images/Banana Tart.jpeg",
+    url: "/recipes/banana-tart",
+        ingrediants: [
+      "Sugar",
+      "Banana"
+    ],
+    description:"asdsdasasdasdasda"
   }
 ];
 const fakeUser = {
@@ -51,6 +144,7 @@ const fakeUser = {
     url: "/recipes/banana-tart",
     }
   ],
+  admin:false,
   adds:[
         {
     title: "Banana Tart",
@@ -71,6 +165,7 @@ const fakeUser2 = {
   lastViewed:
     recipes[0]
   ,
+  admin:true
 };
 
 function getRandomRecipes(arr,x) {
@@ -93,8 +188,23 @@ app.get("/profile", (req, res) => {
   const randomRecipes = getRandomRecipes(recipes,1);
   res.render("profile", { recipes: randomRecipes,user: fakeUser });
 });
-app.get("/recipes", (req, res) => {
-  res.render("recipes", { recipes: recipes,user: fakeUser });
+app.get('/recipes', async (req, res) => {
+  const page = parseInt(req.query.page) || 1;
+  const limit = 6;
+
+  const startIndex = (page - 1) * limit;
+  const endIndex = page * limit;
+
+  const paginatedRecipes = recipes.slice(startIndex, endIndex);
+
+  const totalPages = Math.ceil(recipes.length / limit);
+
+  res.render('recipes', {
+    recipes: paginatedRecipes,
+    currentPage: page,
+    totalPages: totalPages,
+    user: fakeUser2
+  });
 });
 app.get("/recipeViewed/:title", (req, res) => {
   const recipetitle = req.params.title;
@@ -109,6 +219,9 @@ app.get("/signLogin", (req, res) => {
   res.render("signLogin",{user: null });
 });
 app.get("/forgotPass", (req, res) => {
-  res.render("forgotPass",{user: null });
+  res.render("forgotPass",{user: null,sent: false,verified: false });
+});
+app.get("/adminDashboard", (req, res) => {
+  res.render("adminDashboard", {user:fakeUser2 });
 });
 app.listen(3000, () => console.log("Server running on http://localhost:3000"));

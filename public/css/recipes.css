@@ -17,3 +17,20 @@
     background: var(--main-c);
     color: #fff;
 }
+.modal-header{
+    background-color: var(--main-c);
+}
+.ing{
+    background-color: var(--main-c);
+}
+.active>.page-link, .page-link.active {
+    color: var(--text-s);
+    background-color: var(--main-c);
+    border-color: var(--main-c);
+}
+.page-link {
+    color: var(--main-c);
+}
+.page-link:hover {
+    color: var(--text-c);
+}

@@ -38,20 +38,25 @@
           <li class="nav-item">
             <a class="nav-link active" href="recipes">Recipes</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/#contact">Contact</a>
-          </li>
-          <li class="nav-item">
-            <% if (user) { %>
-              <a class="nav-link" href="profile"><img class="prf-nav rounded-circle" src="<%=user.img%>"
-                  alt="user-img"></a>
-              <% } else { %>
-                <a class="nav-link" href="signLogin">Sign Up</a>
-                <% } %>
-          </li>
-          <li class="nav-item">
-            <i class="fa-solid fa-moon fa-lg" id="darkModeToggle"></i>
-          </li>
+                              <%if(user.admin){%>
+            <li class="nav-item">
+              <a class="nav-link " href="/adminDashboard">Admin</a>
+            </li>
+            <%}%>
+              <li class="nav-item">
+                <a class="nav-link" href="/#contact">Contact</a>
+              </li>
+              <li class="nav-item">
+                <% if (user) { %>
+                  <a class="nav-link" href="profile"><img class="prf-nav rounded-circle" src="<%=user.img%>"
+                      alt="user-img"></a>
+                  <% } else { %>
+                    <a class="nav-link" href="signLogin">Sign Up</a>
+                    <% } %>
+              </li>
+              <li class="nav-item">
+                <i class="fa-solid fa-moon fa-lg" id="darkModeToggle"></i>
+              </li>
         </ul>
       </div>
     </div>
@@ -82,12 +87,13 @@
         <% recipes.forEach(recipe=>{ %>
           <div class="col-xl-4 col-md-6">
             <div class="inner">
-              <div class="card shadow">
+              <div class="card shadow mb-2">
                 <div class="img-box overflow-hidden">
                   <img src="<%= recipe.img %>" alt="<%= recipe.title %>">
                 </div>
                 <div class="card-body">
-                  <a href="recipeViewed/<%= recipe.title %>" class="text-black text-decoration-none d-flex justify-content-between">
+                  <a href="recipeViewed/<%= recipe.title %>"
+                    class="text-black text-decoration-none d-flex justify-content-between">
                     <h5 class="card-title">
                       <%= recipe.title %>
                     </h5>
@@ -95,12 +101,100 @@
                   </a>
                 </div>
               </div>
+              <%if(user.admin){%>
+                <div class="adminCntrls">
+                  <button type="button" class="btn btn-outline-dark" id="editRecipe" data-bs-toggle="modal"
+                    data-bs-target="#exampleModal">Edit</button>
+                  <button type="button" class="btn btn-outline-dark" id="deleteRecipe">Delete</button>
+                </div>
+
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                  aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Edit Recipe</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                        <form id="recipeForm">
+                          <div>
+                            <label for="RecipeImg" class="col-form-label">Recipe's image :</label>
+                            <input type="file" name="RecipeImg" id="RecipeImg" class="w-100 rounded-2 mt-2"
+                              accept="image/*" required>
+                          </div>
+                          <div class="mb-3">
+                            <label for="RecipeName" class="col-form-label"></label>
+                            <input type="text" class="form-control" id="RecipeName" name="RecipeName"
+                              placeholder="Recipe for" value="<%=recipe.title%>" required>
+                          </div>
+                          <div class="mb-3 d-flex">
+                            <label for="Ingredients" class="col-form-label"></label>
+                            <input type="text" class="form-control me-2" id="Ingredients" name="Ingredients"
+                              placeholder="Ingredients">
+                            <button class="btn btn-outline-dark" id="addIngBtn" disabled>+</button>
+                          </div>
+                          <div class="ings mb-3 d-flex flex-wrap gap-2" id="ings">
+                            <%recipe.ingrediants.forEach(ingrediant=>{%>
+                              <div class="ing rounded-4 px-2 py-1">
+                                <%= ingrediant %>
+                              </div>
+                              <%})%>
+                          </div>
+                          <div class="mb-3">
+                            <label for="RecipeDescription" class="col-form-label"></label>
+                            <textarea class="form-control" id="RecipeDescription" placeholder="Description"
+                              name="RecipeDescription" required><%=recipe.description%></textarea>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="submit" class="btn btn-outline-dark" id="addRecBtn"
+                              data-bs-dismiss="modal">Save changes</button>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <%}%>
             </div>
           </div>
           <% }) %>
       </div>
     </div>
   </section>
+
+  <nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center">
+      <% if (currentPage> 1) { %>
+        <li class="page-item">
+          <a class="page-link" href="/recipes?page=<%= currentPage - 1 %>">Previous</a>
+        </li>
+        <% } else { %>
+          <li class="page-item disabled">
+            <span class="page-link">Previous</span>
+          </li>
+          <% } %>
+
+            <% for (let i=1; i <=totalPages; i++) { %>
+              <li class="page-item <%= currentPage === i ? 'active' : '' %>">
+                <a class="page-link" href="/recipes?page=<%= i %>">
+                  <%= i %>
+                </a>
+              </li>
+              <% } %>
+
+                <% if (currentPage < totalPages) { %>
+                  <li class="page-item">
+                    <a class="page-link" href="/recipes?page=<%= currentPage + 1 %>">Next</a>
+                  </li>
+                  <% } else { %>
+                    <li class="page-item disabled">
+                      <span class="page-link">Next</span>
+                    </li>
+                    <% } %>
+    </ul>
+  </nav>
+
 
   <footer>
     <div class="d-flex align-items-center justify-content-center text-secondary py-4 text-center bg-black">

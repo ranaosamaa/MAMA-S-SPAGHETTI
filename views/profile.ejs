@@ -39,12 +39,17 @@
                     <li class="nav-item">
                         <a class="nav-link" href="/recipes">Recipes</a>
                     </li>
+                              <%if(user.admin){%>
+            <li class="nav-item">
+              <a class="nav-link" href="/adminDashboard">Admin</a>
+            </li>
+            <%}%>
                     <li class="nav-item">
                         <a class="nav-link" href="/#contact">Contact</a>
                     </li>
                     <li class="nav-item active">
                         <% if (user) { %>
-                            <a class="nav-link" href="profile"><img class="prf-nav rounded-circle" src="<%=user.img%>"
+                            <a class="nav-link" href="/profile"><img class="prf-nav rounded-circle" src="<%=user.img%>"
                                     alt="user-img"></a>
                             <% } else { %>
                                 <a class="nav-link" href="/signLogin">Sign Up</a>
