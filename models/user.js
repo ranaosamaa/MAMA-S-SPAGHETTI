@@ -11,7 +11,7 @@ const userSchema = new mongoose.Schema({
         required: true,
         unique: true,
     },
-    passwordHash: {
+    password: {
         type: String,
         required: true,
     },
@@ -19,18 +19,26 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    isAdmin: {
+    admin: {
         type: Boolean,
         default: false,
     },
-    favorites: [{
+    favs: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'recipe'
-     }],
-    posted: [{
+        ref: 'recipes'
+    }],
+    adds: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'recipe'
-     }],
+        ref: 'recipes'
+    }],
+    lastViewed: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'recipes'
+    },
+    darkMood: {
+        type: Boolean,
+        default: false,
+    },
 });
 
 userSchema.set('toJSON', {

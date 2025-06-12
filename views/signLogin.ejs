@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="<%= user.darkMood ? 'dark' : 'light' %>">
 
 <head>
     <meta charset="UTF-8">
@@ -50,9 +50,15 @@
                                 <a class="nav-link active" href="signLogin">Sign Up</a>
                                 <% } %>
                     </li>
-                    <li class="nav-item">
-                        <i class="fa-solid fa-moon fa-lg" id="darkModeToggle"></i>
-                    </li>
+                            <%if(user.darkMood){%>
+                            <li class="nav-item">
+                                <i class="fa-solid fa-sun fa-lg" id="darkModeToggle"></i>
+                            </li>
+                            <%}else{%>
+                            <li class="nav-item">
+                                <i class="fa-solid fa-moon fa-lg" id="darkModeToggle"></i>
+                            </li>
+                            <%}%>
                 </ul>
             </div>
         </div>

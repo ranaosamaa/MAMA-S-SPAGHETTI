@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="<%= user.darkMood ? 'dark' : 'light' %>">
 
 <head>
   <meta charset="UTF-8">
@@ -38,22 +38,28 @@
           <li class="nav-item">
             <a class="nav-link" href="#recipes">Recipes</a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="/adminDashboard">Admin</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#contact">Contact</a>
+          </li>
+          <li class="nav-item">
+            <% if (user) { %>
+              <a class="nav-link" href="profile"><img class="rounded-circle" src="<%=user.img%>" alt="user-img"></a>
+              <% } else { %>
+                <a class="nav-link" href="#sign">Sign Up</a>
+                <% } %>
+          </li>
+          <%if(user.darkMood){%>
             <li class="nav-item">
-              <a class="nav-link active" href="/adminDashboard">Admin</a>
+              <i class="fa-solid fa-sun fa-lg" id="darkModeToggle"></i>
             </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#contact">Contact</a>
-              </li>
-              <li class="nav-item">
-                <% if (user) { %>
-                  <a class="nav-link" href="profile"><img class="rounded-circle" src="<%=user.img%>" alt="user-img"></a>
-                  <% } else { %>
-                    <a class="nav-link" href="#sign">Sign Up</a>
-                    <% } %>
-              </li>
+            <%}else{%>
               <li class="nav-item">
                 <i class="fa-solid fa-moon fa-lg" id="darkModeToggle"></i>
               </li>
+              <%}%>
         </ul>
       </div>
     </div>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="<%= user.darkMood ? 'dark' : 'light' %>">
 
 <head>
     <meta charset="UTF-8">
@@ -9,7 +9,7 @@
         href="https://fonts.googleapis.com/css2?family=Playpen+Sans:wght@100..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Shadows+Into+Light&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="/css/all.min.css" />
-    <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="/css/main.css">
     <link rel="stylesheet" href="/css/profile.css" />
     <title>MaMa's Spaghetti'</title>
@@ -39,25 +39,31 @@
                     <li class="nav-item">
                         <a class="nav-link" href="/recipes">Recipes</a>
                     </li>
-                              <%if(user.admin){%>
-            <li class="nav-item">
-              <a class="nav-link" href="/adminDashboard">Admin</a>
-            </li>
-            <%}%>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/#contact">Contact</a>
-                    </li>
-                    <li class="nav-item active">
-                        <% if (user) { %>
-                            <a class="nav-link" href="/profile"><img class="prf-nav rounded-circle" src="<%=user.img%>"
-                                    alt="user-img"></a>
-                            <% } else { %>
-                                <a class="nav-link" href="/signLogin">Sign Up</a>
-                                <% } %>
-                    </li>
-                    <li class="nav-item">
-                        <i class="fa-solid fa-moon fa-lg" id="darkModeToggle"></i>
-                    </li>
+                    <%if(user.admin){%>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/adminDashboard">Admin</a>
+                        </li>
+                        <%}%>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/#contact">Contact</a>
+                            </li>
+                            <li class="nav-item active">
+                                <% if (user) { %>
+                                    <a class="nav-link" href="/profile"><img class="prf-nav rounded-circle"
+                                            src="<%=user.img%>" alt="user-img"></a>
+                                    <% } else { %>
+                                        <a class="nav-link" href="/signLogin">Sign Up</a>
+                                        <% } %>
+                            </li>
+                            <%if(user.darkMood){%>
+                            <li class="nav-item">
+                                <i class="fa-solid fa-sun fa-lg" id="darkModeToggle"></i>
+                            </li>
+                            <%}else{%>
+                            <li class="nav-item">
+                                <i class="fa-solid fa-moon fa-lg" id="darkModeToggle"></i>
+                            </li>
+                            <%}%>
                 </ul>
             </div>
         </div>
@@ -176,38 +182,38 @@
                             </div>
                             <div class="last-viewed">
                                 <%if(user.lastViewed.title){%>
-                                <h5>Last Viewed Recipe</h5>
-                                <div class="card shadow">
-                                    <div class="img-box overflow-hidden">
-                                        <img src="<%= user.lastViewed.img %>" alt="<%= user.lastViewed.title %>">
+                                    <h5>Last Viewed Recipe</h5>
+                                    <div class="card shadow">
+                                        <div class="img-box overflow-hidden">
+                                            <img src="<%= user.lastViewed.img %>" alt="<%= user.lastViewed.title %>">
+                                        </div>
+                                        <div class="card-body">
+                                            <a href="recipeViewed/<%= user.lastViewed.title %>"
+                                                class="text-black text-decoration-none d-flex justify-content-between">
+                                                <h5 class="card-title">
+                                                    <%= user.lastViewed.title %>
+                                                </h5>
+                                                <span>View Recipe <i class="fa-solid fa-arrow-right"></i></span>
+                                            </a>
+                                        </div>
                                     </div>
-                                    <div class="card-body">
-                                        <a href="recipeViewed/<%= user.lastViewed.title %>"
-                                            class="text-black text-decoration-none d-flex justify-content-between">
-                                            <h5 class="card-title">
-                                                <%= user.lastViewed.title %>
-                                            </h5>
-                                            <span>View Recipe <i class="fa-solid fa-arrow-right"></i></span>
-                                        </a>
-                                    </div>
-                                </div>
-                                <%}else{%>
-                                <h5>Try this Recipe</h5>
-                                <div class="card shadow">
-                                    <div class="img-box overflow-hidden">
-                                        <img src="<%= recipes[0].img %>" alt="<%= recipes[0].title %>">
-                                    </div>
-                                    <div class="card-body">
-                                        <a href="recipeViewed/<%=recipes[0].title%>"
-                                            class="text-black text-decoration-none d-flex justify-content-between">
-                                            <h5 class="card-title">
-                                                <%= recipes[0].title %>
-                                            </h5>
-                                            <span>View Recipe <i class="fa-solid fa-arrow-right"></i></span>
-                                        </a>
-                                    </div>
-                                </div>
-                                <%}%>
+                                    <%}else{%>
+                                        <h5>Try this Recipe</h5>
+                                        <div class="card shadow">
+                                            <div class="img-box overflow-hidden">
+                                                <img src="<%= recipes[0].img %>" alt="<%= recipes[0].title %>">
+                                            </div>
+                                            <div class="card-body">
+                                                <a href="recipeViewed/<%=recipes[0].title%>"
+                                                    class="text-black text-decoration-none d-flex justify-content-between">
+                                                    <h5 class="card-title">
+                                                        <%= recipes[0].title %>
+                                                    </h5>
+                                                    <span>View Recipe <i class="fa-solid fa-arrow-right"></i></span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <%}%>
                             </div>
                             <div class="btns py-4 d-flex flex-column flex-lg-row gap-3">
                                 <button class="btn btn-outline-dark">Edit Profile</button>
