@@ -42,7 +42,7 @@ exports.updateUser = async (req, res) => {
             name: req.body.name,
             email: req.body.email,
             passwordHash: newPassword,
-            profilepic: req.body.profilepic,
+            img: req.body.img, // Previously `profilepic`
             isAdmin: req.body.isAdmin,
             favorites: req.body.favorites,
             posted: req.body.posted,
@@ -55,39 +55,77 @@ exports.updateUser = async (req, res) => {
 };
 
 
+
 //login exit user
 exports.loginUser = async (req, res) => {
-    const user = await User.findOne({ email: req.body.email });
-    const secret = process.env.secret;
+    const { loginUsername, loginPassword } = req.body;
+
+    if (!loginUsername || !loginPassword) {
+        return res.status(400).send('Missing login credentials.');
+    }
+
+    const user = await User.findOne({ email: loginUsername }); // assumes loginUsername is email
+
     if (!user) return res.status(400).send('User not found');
 
-    if (bcrypt.compareSync(req.body.password, user.passwordHash)) {
-        const token = jwt.sign(
-            { userId: user.id, isAdmin: user.isAdmin },
-            secret,
-            { expiresIn: '1d' }
-        );
-        res.status(200).send({ user: user.email, token });
-    } else {
-        res.status(400).send('Wrong password');
-    }
+    const isMatch = bcrypt.compareSync(loginPassword, user.passwordHash);
+    if (!isMatch) return res.status(400).send('Wrong password');
+
+    const token = jwt.sign(
+        { userId: user.id, isAdmin: user.isAdmin },
+        process.env.secret,
+        { expiresIn: '1d' }
+    );
+
+    res.status(200).send({ 
+        user: {
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            img: user.img
+        },
+        token 
+    });
 };
+
+
 
 //create new user
 exports.registerUser = async (req, res) => {
+    const { name, email, password } = req.body;
+
+    if (!name || !email || !password) {
+        return res.status(400).send('Missing required fields.');
+    }
+
     let user = new User({
-        name: req.body.name,
-        email: req.body.email,
-        passwordHash: bcrypt.hashSync(req.body.password, 8),
-        profilepic: req.body.profilepic,
-        isAdmin: req.body.isAdmin || false,
+        name,
+        email,
+        passwordHash: bcrypt.hashSync(password, 8),
+        img: "/images/default-profile.png",
+        isAdmin: false,
         favorites: [],
         posted: [],
     });
-    user = await user.save();
-    if (!user) return res.status(400).send('User registration failed!');
-    res.send(user);
+
+    try {
+        user = await user.save();
+        res.status(201).send({
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            img: user.img,
+        });
+    } catch (error) {
+        if (error.code === 11000) {
+            res.status(400).send('User with that email or name already exists.');
+        } else {
+            res.status(400).send('User registration failed.');
+        }
+    }
 };
+
+
 
 //Delete user
 exports.deleteUser = async (req, res) => {

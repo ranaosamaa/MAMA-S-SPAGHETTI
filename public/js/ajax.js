@@ -6,7 +6,7 @@ document.getElementById('userForm').addEventListener('submit', function(e) {
         name: document.getElementById('name').value,
         email: document.getElementById('email').value,
         password: document.getElementById('password').value, 
-        profilepic: document.getElementById('profilepic').value,
+        img: document.getElementById('img').value,
         isAdmin: document.getElementById('isAdmin').checked, 
         favorites: [],
         posted: [],
