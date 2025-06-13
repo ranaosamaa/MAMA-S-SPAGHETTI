@@ -5,7 +5,7 @@ const userRoutes = require('./routes/users');
 const { Recipe } = require("./models/recipe");
 const { User } = require("./models/user");
 
-const express = require('express');
+
 const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
