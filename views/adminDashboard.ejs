@@ -30,25 +30,25 @@
             <a class="nav-link" aria-current="page" href="#home">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#about">About</a>
+            <a class="nav-link" href="about">About</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#services">Services</a>
+            <a class="nav-link" href="services">Services</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#recipes">Recipes</a>
+            <a class="nav-link" href="recipes">Recipes</a>
           </li>
           <li class="nav-item">
             <a class="nav-link active" href="/adminDashboard">Admin</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#contact">Contact</a>
+            <a class="nav-link" href="contact">Contact</a>
           </li>
           <li class="nav-item">
             <% if (user) { %>
               <a class="nav-link" href="profile"><img class="rounded-circle" src="<%=user.img%>" alt="user-img"></a>
               <% } else { %>
-                <a class="nav-link" href="#sign">Sign Up</a>
+                <a class="nav-link" href="signLogin">Sign Up</a>
                 <% } %>
           </li>
           <%if(user.darkMood){%>
@@ -64,6 +64,138 @@
       </div>
     </div>
   </nav>
+
+
+  <section class="adminTop text-center">
+    <h1>Admin Dashboard</h1>
+  </section>
+
+
+  <section class="editRecipes">
+    <div class="container text-center">
+      <div class="top">
+        <h2>
+          Control Recipes
+        </h2>
+      </div>
+      <a href="/recipes">Edit Recipes</a>
+    </div>
+  </section>
+
+  <section class="editUser bg2">
+    <div class="container text-center">
+      <div class="top">
+        <h2>
+          Control Users
+        </h2>
+      </div>
+
+      <div class="usersList">
+        <div class="row g-3">
+          <%users.forEach(user=>{%>
+            <div class="col-lg-3 col-md-6">
+              <div class="inner">
+
+                <div class="card userCard">
+
+                  <div class="img-box overflow-hidden">
+                    <img src="/images/<%= user.img %>" alt="<%= user.name %>">
+                  </div>
+
+                  <div class="card-body">
+                    <h5 class="card-title" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                      <%= user.name %>
+                    </h5>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            <div class="modal fade service-modal" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false"
+              tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">
+                      <%= user.name%>
+                    </h1>
+                    <button type="button" class="btn-close" id="modal-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <form id="userEditForm">
+                      <div class="Image">
+                        <div class="img-box rounded-3 overflow-hidden mb-3">
+                          <img src="/images/<%=user.img%>" alt="<%=user.name%> Image" id="userImg">
+                        </div>
+                        <div class="d-flex">
+                          <label for="userImgUp" class="w-25">Change img:</label>
+                          <input type="file" name="userImgUp" id="userImgUp" class="w-75">
+                        </div>
+                      </div>
+
+                      <div class="mb-2">
+                        <label for="userName" class="col-form-label"></label>
+                        <input type="text" class="form-control" id="userName" name="userName"
+                          placeholder="Update Name" value="<%=user.name%>" required>
+                      </div>
+
+                      <div class="mb-2">
+                        <label for="userPass" class="col-form-label"></label>
+                        <input type="text" class="form-control" id="userPass" name="userPass"
+                          placeholder="Update Password" value="<%=user.password%>" required>
+                      </div>
+
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-dark" id="delBtn" data-bs-dismiss="modal">Delete</button>
+                        <button type="button" class="btn btn-outline-dark" id="editBtn"
+                          data-bs-dismiss="modal">Update</button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <%})%>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+    <nav aria-label="Page navigation example" class="bg2">
+    <ul class="pagination justify-content-center">
+      <% if (currentPage> 1) { %>
+        <li class="page-item">
+          <a class="page-link" href="/adminDashboard?page=<%= currentPage - 1 %>">Previous</a>
+        </li>
+        <% } else { %>
+          <li class="page-item disabled">
+            <span class="page-link">Previous</span>
+          </li>
+          <% } %>
+
+            <% for (let i=1; i <=totalPages; i++) { %>
+              <li class="page-item <%= currentPage === i ? 'active' : '' %>">
+                <a class="page-link" href="/adminDashboard?page=<%= i %>">
+                  <%= i %>
+                </a>
+              </li>
+              <% } %>
+
+                <% if (currentPage < totalPages) { %>
+                  <li class="page-item">
+                    <a class="page-link" href="/adminDashboard?page=<%= currentPage + 1 %>">Next</a>
+                  </li>
+                  <% } else { %>
+                    <li class="page-item disabled">
+                      <span class="page-link">Next</span>
+                    </li>
+                    <% } %>
+    </ul>
+  </nav>
+
+
 
   <footer>
     <div class="d-flex align-items-center justify-content-center text-secondary py-4 text-center bg-black">
