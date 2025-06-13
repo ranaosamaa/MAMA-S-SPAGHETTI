@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const express = require('express');
+const session = require('express-session');
 const userRoutes = require('./routes/users');
 const { Recipe } = require("./models/recipe");
 const { User } = require("./models/user");
@@ -8,6 +9,12 @@ const express = require('express');
 const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(session({
+  secret: 'yourSuperSecretKey', 
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: false }
+}));
 app.set('view engine', 'ejs');
 
 
@@ -24,6 +31,34 @@ mongoose.connect("mongodb://localhost:27017/Mams", {
 .then(() => console.log("Connected to MongoDB"))
 .catch((err) => console.error("MongoDB connection failed:", err));
 
+
+app.post('/login', async (req, res) => {
+  // Example logic: find by email/password (replace with real logic)
+  const { email, password } = req.body;
+  const user = await User.findOne({ email, password });
+  if (user) {
+    req.session.userId = user._id;
+    res.send("Logged in!");
+  } else {
+    res.status(401).send("Invalid credentials");
+  }
+});
+
+app.post('/logout', (req, res) => {
+  req.session.destroy(err => {
+    if (err) return res.status(500).send("Logout failed");
+    res.send("Logged out!");
+  });
+});
+
+app.use(async (req, res, next) => {
+  if (req.session.userId) {
+    res.locals.user = await User.findById(req.session.userId);
+  } else {
+    res.locals.user = null;
+  }
+  next();
+});
 
 // home
 app.get("/", async (req, res) => {
