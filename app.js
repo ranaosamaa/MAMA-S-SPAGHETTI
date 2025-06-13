@@ -1,18 +1,28 @@
+require('dotenv').config();
 const mongoose = require("mongoose");
 const express = require('express');
 const session = require('express-session');
 const userRoutes = require('./routes/users');
 const { Recipe } = require("./models/recipe");
 const { User } = require("./models/user");
+const MongoStore = require('connect-mongo');
+const path = require('path');
 
+const helmet = require('helmet');
+const csrf = require('csurf');
+const cookieParser = require('cookie-parser');
 
 const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(helmet());
+app.use(cookieParser());
+app.use(express.static('public'));
+
 app.use(session({
   secret: 'yourSuperSecretKey', 
   resave: false,
-  saveUninitialized: true,
+  saveUninitialized: false,
   cookie: { secure: false }
 }));
 app.set('view engine', 'ejs');
