@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
 
 const userSchema = new mongoose.Schema({
     name: {
@@ -40,12 +41,23 @@ const userSchema = new mongoose.Schema({
         default: false,
     },
 });
+userSchema.pre('save', async function(next) {
+  if (this.isModified('password')) {
+    this.password = await bcrypt.hash(this.password, 10);
+  }
+  next();
+});
+userSchema.methods.checkPassword = function(inputPassword) {
+  return bcrypt.compare(inputPassword, this.password);
+};
 
 userSchema.set('toJSON', {
     virtuals: true,
 });
 userSchema.virtual('id').get(function () {
     return this._id.toHexString();
+
+    module.exports = mongoose.model('User', userSchema);
 });
 exports.user= mongoose.model('user', userSchema);
 exports.userSchema = userSchema;
