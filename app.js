@@ -4,7 +4,7 @@ app.use('/api/users', userRoutes);
 const { Recipe } = require("./models/recipe");
 const { User } = require("./models/user");
 
-mongoose.connect("mongodb://localhost:27017/yourdbname", {
+mongoose.connect("mongodb://localhost:27017/Mams", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
