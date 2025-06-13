@@ -1,39 +1,38 @@
-
 const express = require('express');
-const router = express.Router();
+const bcrypt = require('bcrypt');
 const User = require('../models/User');
 
-router.get('/signup', (req, res) => {
-  res.render('signup');
-});
+const router = express.Router();
 
+// Show login form
 router.get('/login', (req, res) => {
   res.render('login');
 });
 
-router.post('/signup', async (req, res) => {
-  const { email, password } = req.body;
-  const existing = await User.findOne({ email });
-  if (existing) return res.send('User already exists.');
 
-  const user = await User.create({ email, password });
-  req.session.user = { id: user._id, email: user.email };
+router.post('/register', async (req, res) => {
+  const { username, password } = req.body;
+  const hashed = await bcrypt.hash(password, 10);
+  const user = new User({ username, password: hashed });
+  await user.save();
+  req.session.userId = user._id;
   res.redirect('/dashboard');
 });
 
+
 router.post('/login', async (req, res) => {
-  const { email, password } = req.body;
-  const user = await User.findOne({ email });
-  if (!user || !(await user.comparePassword(password))) {
-    return res.send('Invalid login');
+  const { username, password } = req.body;
+  const user = await User.findOne({ username });
+  if (!user || !(await bcrypt.compare(password, user.password))) {
+    return res.send('Invalid username or password');
   }
-  req.session.user = { id: user._id, email: user.email };
+  req.session.userId = user._id;
   res.redirect('/dashboard');
 });
 
 router.get('/logout', (req, res) => {
   req.session.destroy(() => {
-    res.redirect('/auth/login');
+    res.redirect('/login');
   });
 });
 
