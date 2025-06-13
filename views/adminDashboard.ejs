@@ -4,21 +4,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="shortcut icon" href="/images/favicon.svg" type="image/x-icon">
+  <link rel="shortcut icon" href="/public/images/favicon.svg" type="image/x-icon">
   <link
     href="https://fonts.googleapis.com/css2?family=Playpen+Sans:wght@100..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Shadows+Into+Light&display=swap"
     rel="stylesheet">
-  <link rel="stylesheet" href="/css/all.min.css" />
-  <link rel="stylesheet" href="/css/bootstrap.min.css" />
-  <link rel="stylesheet" href="/css/main.css">
-  <link rel="stylesheet" href="/css/adminDashboard.css" />
+  <link rel="stylesheet" href="/public/css/all.min.css" />
+  <link rel="stylesheet" href="/public/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="/public/css/main.css">
+  <link rel="stylesheet" href="/public/css/adminDashboard.css" />
   <title>MaMa's Spaghetti'</title>
 </head>
 
 <body>
   <nav class="navbar navbar-expand-lg text-black position-fixed w-100 z-2 bg1" id="navId">
     <div class="container">
-      <a class="navbar-brand fw-bold text-uppercase" href="#"><img src="/images/logo.png" alt="logo"> MaMa's
+      <a class="navbar-brand fw-bold text-uppercase" href="#"><img src="/public/images/logo.png" alt="logo"> MaMa's
         Spaghetti</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
         aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -39,14 +39,14 @@
             <a class="nav-link" href="#recipes">Recipes</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" href="/adminDashboard">Admin</a>
+            <a class="nav-link active" href="adminDashboard.ejs">Admin</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#contact">Contact</a>
           </li>
           <li class="nav-item">
             <% if (user) { %>
-              <a class="nav-link" href="profile"><img class="rounded-circle" src="<%=user.img%>" alt="user-img"></a>
+              <a class="nav-link" href="profile.ejs"><img class="rounded-circle" src="<%=user.img%>" alt="user-img"></a>
               <% } else { %>
                 <a class="nav-link" href="#sign">Sign Up</a>
                 <% } %>
@@ -72,9 +72,11 @@
     </div>
   </footer>
 
-  <script src="/js/darkMood.js"></script>
-  <script src="/js/bootstrap.bundle.min.js"></script>
-  <script src="/js/adminDashboard.js"></script>
+  <script src="/public/js/darkMood.js"></script>
+  <script src="/public/js/bootstrap.bundle.min.js"></script>
+  <script src="/public/js/adminDashboard.js"></script>
+  <script src="/public/js/ajax.js"></script>
+   <script src="../app.js"></script>
 </body>
 </body>
 
