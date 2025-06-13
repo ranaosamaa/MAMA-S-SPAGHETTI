@@ -1,11 +1,15 @@
 {
   "dependencies": {
+    "bcryptjs": "^3.0.2",
     "ejs": "^3.1.10",
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongodb": "^6.17.0",
+    "mongoose": "^8.15.2",
+    "multer": "^2.0.1"
   },
-  "name": "mama-spaghetti",
+  "name": "c",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -13,5 +17,14 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs"
+  "type": "commonjs",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ranaosamaa/MAMA-S-SPAGHETTI.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ranaosamaa/MAMA-S-SPAGHETTI/issues"
+  },
+  "homepage": "https://github.com/ranaosamaa/MAMA-S-SPAGHETTI#readme",
+  "description": ""
 }

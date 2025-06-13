@@ -2,95 +2,103 @@ const { User } = require('../models/user');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
-//Read all
-exports.getAllUser = async (req, res) =>{
-    const userList = await User.find().select('-passwordHash');
-
-    if(!userList) {
-        res.status(500).json({success: false})
-    } 
-    res.send(userList);
+// Read all
+exports.getAllUser = async (req, res) => {
+    try {
+        const userList = await User.find().select('-password');
+        res.send(userList);
+    } catch {
+        res.status(500).json({ success: false });
+    }
 };
 
-
-//Read by id
+// Read by ID
 exports.getUserByID = async (req, res) => {
-    const user = await User.findById(req.params.id).select('-passwordHash');
-    if(!user) {
-        res.status(500).json({message: 'The user with the given ID was not found.'})
-    } 
-    res.status(200).send(user);
+    try {
+        const user = await User.findById(req.params.id).select('-password');
+        if (!user) return res.status(404).json({ message: 'User not found.' });
+        res.status(200).send(user);
+    } catch {
+        res.status(500).json({ message: 'Error fetching user.' });
+    }
 };
 
-//Read one
+// Read profile
 exports.getUserProfile = async (req, res) => {
-    const user = await User.findById(req.user.userId).select('-passwordHash');
-    if (!user) return res.status(404).send('User not found');
-    res.send(user);
+    try {
+        const user = await User.findById(req.user.userId).select('-password');
+        if (!user) return res.status(404).send('User not found');
+        res.send(user);
+    } catch {
+        res.status(500).send('Failed to get user profile');
+    }
 };
 
-//update
+// Update 
 exports.updateUser = async (req, res) => {
-    const userExist = await User.findById(req.params.id);
-    const newPassword = req.body.password
-        ? bcrypt.hashSync(req.body.password, 8)
-        : userExist.passwordHash;
+    try {
+        const userExist = await User.findById(req.params.id);
+        if (!userExist) return res.status(404).send('User not found');
 
-    const user = await User.findByIdAndUpdate(
-        req.params.id,
-        {
-            name: req.body.name,
-            email: req.body.email,
-            passwordHash: newPassword,
-            img: req.body.img, // Previously `profilepic`
-            isAdmin: req.body.isAdmin,
-            favorites: req.body.favorites,
-            posted: req.body.posted,
-        },
-        { new: true }
-    );
+        const newPassword = req.body.password
+            ? bcrypt.hashSync(req.body.password, 8)
+            : userExist.password;
 
-    if (!user) return res.status(400).send('User update failed!');
-    res.send(user);
+        const user = await User.findByIdAndUpdate(
+            req.params.id,
+            {
+                name: req.body.name,
+                email: req.body.email,
+                password: newPassword,
+                img: req.body.img,
+                favs: req.body.favs,
+                adds: req.body.adds,
+                lastViewed: req.body.lastViewed,
+                darkMood: req.body.darkMood,
+            },
+            { new: true }
+        );
+
+        if (!user) return res.status(400).send('User update failed!');
+        res.send(user);
+    } catch (err) {
+        res.status(500).send('Error updating user');
+    }
 };
 
-
-
-//login exit user
+// Login
 exports.loginUser = async (req, res) => {
     const { loginUsername, loginPassword } = req.body;
-
     if (!loginUsername || !loginPassword) {
         return res.status(400).send('Missing login credentials.');
     }
 
-    const user = await User.findOne({ email: loginUsername }); // assumes loginUsername is email
-
+    const user = await User.findOne({ email: loginUsername });
     if (!user) return res.status(400).send('User not found');
 
-    const isMatch = bcrypt.compareSync(loginPassword, user.passwordHash);
+    const isMatch = bcrypt.compareSync(loginPassword, user.password);
     if (!isMatch) return res.status(400).send('Wrong password');
 
     const token = jwt.sign(
-        { userId: user.id, isAdmin: user.isAdmin },
+        { userId: user.id, admin: user.admin },
         process.env.secret,
         { expiresIn: '1d' }
     );
 
-    res.status(200).send({ 
+    res.status(200).send({
         user: {
             id: user.id,
             name: user.name,
             email: user.email,
-            img: user.img
+            img: user.img,
+            admin: user.admin,
+            darkMood: user.darkMood,
         },
-        token 
+        token,
     });
 };
 
-
-
-//create new user
+// Create
 exports.registerUser = async (req, res) => {
     const { name, email, password } = req.body;
 
@@ -101,11 +109,13 @@ exports.registerUser = async (req, res) => {
     let user = new User({
         name,
         email,
-        passwordHash: bcrypt.hashSync(password, 8),
+        password: bcrypt.hashSync(password, 8),
         img: "/images/default-profile.png",
-        isAdmin: false,
-        favorites: [],
-        posted: [],
+        admin: false,
+        favs: [],
+        adds: [],
+        lastViewed: null,
+        darkMood: false
     });
 
     try {
@@ -125,35 +135,65 @@ exports.registerUser = async (req, res) => {
     }
 };
 
-
-
-//Delete user
+// Delete 
 exports.deleteUser = async (req, res) => {
-    User.findByIdAndRemove(req.params.id).then(user => {
-        if (user) return res.status(200).json({ success: true, message: 'User deleted!' });
-        return res.status(404).json({ success: false, message: 'User not found!' });
-    }).catch(err => {
-        return res.status(500).json({ success: false, error: err });
-    });
+    try {
+        const user = await User.findByIdAndRemove(req.params.id);
+        if (!user) return res.status(404).json({ success: false, message: 'User not found!' });
+        res.status(200).json({ success: true, message: 'User deleted!' });
+    } catch (err) {
+        res.status(500).json({ success: false, error: err });
+    }
 };
 
-
-//Count
+// Get user count
 exports.getUserCount = async (req, res) => {
-    const userCount = await User.countDocuments();
-    if (!userCount) return res.status(500).json({ success: false });
-    res.send({ userCount });
+    try {
+        const userCount = await User.countDocuments();
+        res.send({ userCount });
+    } catch {
+        res.status(500).json({ success: false });
+    }
 };
 
-//admin delete one user
+// admin Delete
 exports.adminDeleteUser = async (req, res) => {
     try {
         const user = await User.findByIdAndRemove(req.params.id);
-        if (!user) {
-            return res.status(404).json({ success: false, message: 'User not found!' });
-        }
+        if (!user) return res.status(404).json({ success: false, message: 'User not found!' });
         res.status(200).json({ success: true, message: 'The user is deleted!' });
     } catch (err) {
         res.status(500).json({ success: false, error: err });
+    }
+};
+
+// last viewed 
+exports.updateLastViewed = async (req, res) => {
+    try {
+        const user = await User.findByIdAndUpdate(
+            req.user.userId,
+            { lastViewed: req.body.recipeId },
+            { new: true }
+        ).select('-password');
+
+        if (!user) return res.status(404).send('User not found');
+        res.send({ message: 'Last viewed recipe updated', lastViewed: user.lastViewed });
+    } catch (err) {
+        res.status(500).send('Failed to update last viewed');
+    }
+};
+
+// dark mode
+exports.toggleDarkMode = async (req, res) => {
+    try {
+        const user = await User.findById(req.user.userId);
+        if (!user) return res.status(404).send('User not found');
+
+        user.darkMood = !user.darkMood;
+        await user.save();
+
+        res.send({ message: 'Dark mode toggled', darkMood: user.darkMood });
+    } catch (err) {
+        res.status(500).send('Failed to toggle dark mode');
     }
 };
