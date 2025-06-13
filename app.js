@@ -9,12 +9,8 @@ const MongoStore = require('connect-mongo');
 const path = require('path');
 
 const helmet = require('helmet');
-const csrf = require('csurf');
-
 const app = express();
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
-app.use(helmet());
+app.use(express.urlencoded({ extended: true }));app.use(helmet());
 app.use(express.static('public'));
 
 
@@ -22,7 +18,8 @@ app.use(session({
   secret: 'yourSuperSecretKey', 
   resave: false,
   saveUninitialized: false,
-  store: MongoStore.create({ mongoUrl: process.env.MONGO_URI
+  store: MongoStore.create({ mongoUrl: process.env.MONGO_URI})
+                          
   cookie: { secure: false,
           maxAge: 1000 * 60 * 60
           }
@@ -46,8 +43,8 @@ mongoose.connect("mongodb://localhost:27017/Mama-s-spaghetti", {
 
 app.post('/login', async (req, res) => {
   const { email, password } = req.body;
-  const user = await User.findOne({ email, password });
-  if (user) {
+
+  if (user && await bcrypt.compare(password, user.password)) {
     req.session.userId = user._id;
     res.send("Logged in!");
   } else {
@@ -76,7 +73,8 @@ app.get("/", async (req, res) => {
   try {
     const allRecipes = await Recipe.find();
     const { getRandomRecipes } = require('./utils/helpers');
-    const user = await User.findOne(); // example: get first user
+    const randomRecipes = getRandomRecipes(allRecipes, 6);
+    const user = await User.findOne(); 
 
     res.render("home", { recipes: randomRecipes, user: user });
   } catch (err) {
