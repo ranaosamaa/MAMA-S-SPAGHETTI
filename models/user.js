@@ -48,5 +48,5 @@ userSchema.set('toJSON', {
 userSchema.virtual('id').get(function () {
     return this._id.toHexString();
 });
-exports.user= mongoose.model('user', userSchema);
-exports.userSchema = userSchema;
+const.user= mongoose.model('user', userSchema);
+module.userSchema = userSchema;
