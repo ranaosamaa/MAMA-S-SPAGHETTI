@@ -1,20 +1,26 @@
+require('dotenv').config();
 const mongoose = require("mongoose");
 const express = require('express');
 const session = require('express-session');
 const userRoutes = require('./routes/users');
 const { Recipe } = require("./models/recipe");
 const { User } = require("./models/user");
+const MongoStore = require('connect-mongo');
+const path = require('path');
 
-
+const helmet = require('helmet');
 const app = express();
-app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(session({
   secret: 'yourSuperSecretKey', 
   resave: false,
-  saveUninitialized: true,
-  cookie: { secure: false }
+  saveUninitialized: false,
+  store: MongoStore.create({ mongoUrl: process.env.MONGO_URI})
+                          
+  cookie: { secure: false,
+          maxAge: 1000 * 60 * 60
+          }
 }));
 app.set('view engine', 'ejs');
 
@@ -25,7 +31,7 @@ app.use('/api/users', userRoutes);
 app.set('view engine', 'ejs');
 
 
-mongoose.connect("mongodb://localhost:27017/Mams", {
+mongoose.connect("mongodb://localhost:27017/Mama-s-spaghetti", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
@@ -34,10 +40,9 @@ mongoose.connect("mongodb://localhost:27017/Mams", {
 
 
 app.post('/login', async (req, res) => {
-  // Example logic: find by email/password (replace with real logic)
   const { email, password } = req.body;
-  const user = await User.findOne({ email, password });
-  if (user) {
+
+  if (user && await bcrypt.compare(password, user.password)) {
     req.session.userId = user._id;
     res.send("Logged in!");
   } else {
@@ -61,12 +66,13 @@ app.use(async (req, res, next) => {
   next();
 });
 
-// home
+
 app.get("/", async (req, res) => {
   try {
     const allRecipes = await Recipe.find();
     const { getRandomRecipes } = require('./utils/helpers');
-    const user = await User.findOne(); // example: get first user
+    const randomRecipes = getRandomRecipes(allRecipes, 6);
+    const user = await User.findOne(); 
 
     res.render("home", { recipes: randomRecipes, user: user });
   } catch (err) {
@@ -74,7 +80,7 @@ app.get("/", async (req, res) => {
   }
 });
 
-//profile
+
 app.get("/profile", async (req, res) => {
   try {
     const allRecipes = await Recipe.find();
@@ -88,7 +94,6 @@ app.get("/profile", async (req, res) => {
   }
 });
 
-// recipes
 app.get("/recipes", async (req, res) => {
   const page = parseInt(req.query.page) || 1;
   const limit = 6;
@@ -113,13 +118,11 @@ app.get("/recipes", async (req, res) => {
   }
 });
 
-//one recipe
 app.get("/recipeViewed/:title", async (req, res) => {
   try {
     const recipe = await Recipe.findOne({ title: req.params.title });
     if (!recipe) return res.status(404).send("Recipe not found");
 
-    // to track last viewed
     const user = await User.findOne();
     user.lastViewed = recipe;
     await user.save();
