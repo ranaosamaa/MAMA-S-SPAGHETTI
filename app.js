@@ -16,7 +16,7 @@ app.use(session({
   secret: 'yourSuperSecretKey', 
   resave: false,
   saveUninitialized: false,
-  store: MongoStore.create({ mongoUrl: process.env.MONGO_URI})
+  store: MongoStore.create({ mongoUrl: process.env.MONGO_URI}),
                           
   cookie: { secure: false,
           maxAge: 1000 * 60 * 60
