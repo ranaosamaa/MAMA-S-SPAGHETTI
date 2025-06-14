@@ -1,28 +1,19 @@
-const {User} = require('../models/user');
 const express = require('express');
 const router = express.Router();
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const usercon = require('../controller/usercon');
-const { authMiddleware, adminOnly } = require('../middleware/auth');
+const userController = require('../controller/userController');
+const { authMiddleware, adminOnly } = require('../middleware/errorHandler');
 
+router.get('/get/count', adminOnly, userController.getUserCount);
+router.delete('/admin/:id', adminOnly, userController.adminDeleteUser);
+router.get('/', adminOnly, userController.getAllUsers);
+router.patch('/changePassword', userController.changePassword );
+router.post('/login', userController.loginUser);
+router.post('/signin', userController.signUser);
+router.patch('/dark-mode', authMiddleware, userController.toggleDarkMode);
+router.patch('/last-viewed', authMiddleware, userController.updateLastViewed);
+router.put('/:id', authMiddleware, userController.editUser);
+router.delete('/:id', authMiddleware, userController.deleteUser);
+router.get('/:id', authMiddleware, userController.getUserByID);
 
-router.get('/', usercon.getAllUser);
-router.get('/:id', authMiddleware, usercon.getUserByID);
-router.get('/profile',authMiddleware, usercon.getUserProfile);
-
-router.put('/:id', authMiddleware, usercon.updateUser);
-
-router.post('/login', usercon.loginUser);
-router.post('/register', usercon.registerUser);
-
-router.delete('/:id', authMiddleware, usercon.deleteUser);
-
-router.get('/get/count', adminOnly, usercon.getUserCount);
-
-router.delete('/:id', adminOnly, usercon.adminDeleteUser);
-
-router.patch('/last-viewed',  authMiddleware, usercon.updateLastViewed);
-router.patch('/dark-mode', authMiddleware, usercon.toggleDarkMode);
 
 module.exports = router;

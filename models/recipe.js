@@ -1,30 +1,34 @@
 const mongoose = require('mongoose');
-exports.Recipe = mongoose.model('Recipe', recipeSchema);
-
 
 const recipeSchema = new mongoose.Schema({
-     image: {
+    image: {
         type: String,
         required: true,
     },
-     title:{
+    title: {
         type: String,
         required: true,
     },
-     ingredients: {
+    ingredients: {
         type: [String],
         required: true,
     },
-     description:{
+    description: {
         type: String,
         required: true,
     }
 });
+
+// Add virtual ID
 recipeSchema.virtual('id').get(function () {
     return this._id.toHexString();
 });
+
+// Enable virtuals in JSON output
 recipeSchema.set('toJSON', {
     virtuals: true,
 });
-exports.recipe = mongoose.model('recipe', recipeSchema);
+
+// Export the model and schema
+exports.Recipe = mongoose.model('Recipe', recipeSchema); 
 exports.recipeSchema = recipeSchema;

@@ -25,15 +25,15 @@ const userSchema = new mongoose.Schema({
     },
     favs: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'recipes'
+        ref: 'Recipe'
     }],
     adds: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'recipes'
+        ref: 'Recipe'
     }],
     lastViewed: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'recipes'
+        ref: 'Recipe'
     },
     darkMood: {
         type: Boolean,
