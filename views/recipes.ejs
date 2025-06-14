@@ -1,24 +1,24 @@
 <!DOCTYPE html>
-<html lang="en" data-bs-theme="<%= user.darkMood ? 'dark' : 'light' %>">
+<html lang="en">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="shortcut icon" href="/public/images/favicon.svg" type="image/x-icon">
+  <link rel="shortcut icon" href="/images/favicon.svg" type="image/x-icon">
   <link
     href="https://fonts.googleapis.com/css2?family=Playpen+Sans:wght@100..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Shadows+Into+Light&display=swap"
     rel="stylesheet">
-  <link rel="stylesheet" href="/public/css/all.min.css" />
-  <link rel="stylesheet" href="/public/css/bootstrap.min.css" />
-  <link rel="stylesheet" href="/public/css/main.css">
-  <link rel="stylesheet" href="/public/css/recipes.css" />
+  <link rel="stylesheet" href="/css/all.min.css" />
+  <link rel="stylesheet" href="/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/recipes.css" />
   <title>MaMa's Spaghetti'</title>
 </head>
 
 <body>
   <nav class="navbar navbar-expand-lg text-black position-fixed w-100 z-2 " id="navId">
     <div class="container">
-      <a class="navbar-brand fw-bold text-uppercase" href="#"><img src="/public/images/logo.png" alt="logo"> MaMa's
+      <a class="navbar-brand fw-bold text-uppercase" href="#"><img src="/images/logo.png" alt="logo"> MaMa's
         Spaghetti</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
         aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -36,11 +36,11 @@
             <a class="nav-link" href="/#services">Services</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" href="recipes.ejs">Recipes</a>
+            <a class="nav-link active" href="recipes">Recipes</a>
           </li>
                               <%if(user.admin){%>
             <li class="nav-item">
-              <a class="nav-link " href="adminDashboard.ejs">Admin</a>
+              <a class="nav-link " href="/adminDashboard">Admin</a>
             </li>
             <%}%>
               <li class="nav-item">
@@ -48,21 +48,15 @@
               </li>
               <li class="nav-item">
                 <% if (user) { %>
-                  <a class="nav-link" href="profile.ejs"><img class="prf-nav rounded-circle" src="<%=user.img%>"
+                  <a class="nav-link" href="profile"><img class="prf-nav rounded-circle" src="<%=user.img%>"
                       alt="user-img"></a>
                   <% } else { %>
-                    <a class="nav-link" href="signLogin.ejs">Sign Up</a>
+                    <a class="nav-link" href="signLogin">Sign Up</a>
                     <% } %>
               </li>
-                            <%if(user.darkMood){%>
-                            <li class="nav-item">
-                                <i class="fa-solid fa-sun fa-lg" id="darkModeToggle"></i>
-                            </li>
-                            <%}else{%>
-                            <li class="nav-item">
-                                <i class="fa-solid fa-moon fa-lg" id="darkModeToggle"></i>
-                            </li>
-                            <%}%>
+              <li class="nav-item">
+                <i class="fa-solid fa-moon fa-lg" id="darkModeToggle"></i>
+              </li>
         </ul>
       </div>
     </div>
@@ -78,10 +72,8 @@
         <h2>Search</h2>
       </div>
       <div class="searcherCont mb-3">
-        <input type="search" id="searcher" class="form-control" placeholder="Search by Recipe Name..">
-      </div>
-      <div class="ingSearcherCont">
-        <input type="search" id="ingSearcher" class="form-control" placeholder="Search by Recipe Ingredients..">
+        <label for="recipeSearch"></label>
+        <input name="recipeSearch" type="search" id="searcher" class="form-control" placeholder="Search by Recipe Name..">
       </div>
     </div>
   </section>
@@ -111,7 +103,7 @@
                 <div class="adminCntrls">
                   <button type="button" class="btn btn-outline-dark" id="editRecipe" data-bs-toggle="modal"
                     data-bs-target="#exampleModal">Edit</button>
-                  <button type="button" class="btn btn-outline-dark" id="deleteRecipe">Delete</button>
+                  
                 </div>
 
                 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
@@ -123,7 +115,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                       </div>
                       <div class="modal-body">
-                        <form id="recipeForm">
+                        <form id="recipeForm" action="/editRecipe/<%=recipe._id%>" method="POST">
                           <div>
                             <label for="RecipeImg" class="col-form-label">Recipe's image :</label>
                             <input type="file" name="RecipeImg" id="RecipeImg" class="w-100 rounded-2 mt-2"
@@ -155,6 +147,7 @@
                           <div class="modal-footer">
                             <button type="submit" class="btn btn-outline-dark" id="addRecBtn"
                               data-bs-dismiss="modal">Save changes</button>
+                              <button type="button" class="btn btn-outline-dark" onclick="window.location.href='/deleteRecipe/<%=recipe._id%>'">Delete</button>
                           </div>
                         </form>
                       </div>
@@ -209,11 +202,9 @@
     </div>
   </footer>
 
-  <script src="/public/js/darkMood.js"></script>
-  <script src="/public/js/bootstrap.bundle.min.js"></script>
-  <script src="/public/js/recipes.js"></script>
-  <script src="/public/js/ajax.js"></script>
-  <script src="../app.js"></script>
+  <script src="/js/darkMood.js"></script>
+  <script src="/js/bootstrap.bundle.min.js"></script>
+  <script src="/js/recipes.js"></script>
 </body>
 
 </html>

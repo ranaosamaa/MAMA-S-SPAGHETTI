@@ -1,199 +1,221 @@
 const { User } = require('../models/user');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const mongoose = require('mongoose');
 
-// Read all
-exports.getAllUser = async (req, res) => {
-    try {
-        const userList = await User.find().select('-password');
-        res.send(userList);
-    } catch {
-        res.status(500).json({ success: false });
-    }
+
+
+
+//forgetpasss
+exports.changePassword = async (req, res) => {
+  const { newPassword, confirmPassword } = req.body;
+  if (newPassword === confirmPassword) {
+    fakeUser.password = newPassword;
+    res.render("forgotPass", { user: null, sent: false, verified: true });
+  } else {
+    res.render("forgotPass", { user: null, sent: false, verified: false });
+  }
 };
 
-// Read by ID
-exports.getUserByID = async (req, res) => {
-    try {
-        const user = await User.findById(req.params.id).select('-password');
-        if (!user) return res.status(404).json({ message: 'User not found.' });
-        res.status(200).send(user);
-    } catch {
-        res.status(500).json({ message: 'Error fetching user.' });
-    }
-};
 
-// Read profile
-exports.getUserProfile = async (req, res) => {
-    try {
-        const user = await User.findById(req.user.userId).select('-password');
-        if (!user) return res.status(404).send('User not found');
-        res.send(user);
-    } catch {
-        res.status(500).send('Failed to get user profile');
-    }
-};
-
-// Update 
-exports.updateUser = async (req, res) => {
-    try {
-        const userExist = await User.findById(req.params.id);
-        if (!userExist) return res.status(404).send('User not found');
-
-        const newPassword = req.body.password
-            ? bcrypt.hashSync(req.body.password, 8)
-            : userExist.password;
-
-        const user = await User.findByIdAndUpdate(
-            req.params.id,
-            {
-                name: req.body.name,
-                email: req.body.email,
-                password: newPassword,
-                img: req.body.img,
-                favs: req.body.favs,
-                adds: req.body.adds,
-                lastViewed: req.body.lastViewed,
-                darkMood: req.body.darkMood,
-            },
-            { new: true }
-        );
-
-        if (!user) return res.status(400).send('User update failed!');
-        res.send(user);
-    } catch (err) {
-        res.status(500).send('Error updating user');
-    }
-};
-
-// Login
+//Login
 exports.loginUser = async (req, res) => {
-    const { loginUsername, loginPassword } = req.body;
-    if (!loginUsername || !loginPassword) {
-        return res.status(400).send('Missing login credentials.');
+  const { loginPassword, loginUsername } = req.body;
+  if (loginPassword === fakeUser.password && loginUsername === fakeUser.name) {
+    res.redirect("/profile");
+  } else {
+    res.render("signLogin", { user: null, error: "Invalid credentials" });
+  }
+};
+
+//create 
+exports.signUser = (req, res) => {
+  const { SignUpUsername, SignUpPassword, email } = req.body;
+
+  if (!SignUpUsername || !SignUpPassword || !email) {
+    return res.render("signLogin", {
+      user: null,
+      error: "All fields are required.",
+    });
+  }
+
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    return res.render("signLogin", {
+      user: null,
+      error: "Invalid email format.",
+    });
+  }
+
+
+  var regex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+
+  if (SignUpPassword.length < 8 || !regex.test(SignUpPassword)) {
+    return res.render("signLogin", {
+      user: null,
+      error: "Password must be at least 8 characters and include a special character.",
+    });
+  }
+
+  if (
+    SignUpUsername === fakeUser.name &&
+    SignUpPassword === fakeUser.password &&
+    email === fakeUser.email
+  ) {
+    return res.redirect("/profile");
+  } else {
+    return res.render("signLogin", {
+      user: null,
+      error: "Invalid credentials",
+    });
+  }
+};
+
+
+//adminDashboard
+exports.editUser = async (req, res) => {
+  try {
+    const { originalName, userName, userPass } = req.body;
+    
+    const updateData = {
+      name: userName,
+      password: userPass
+    };
+
+    if (req.file) {
+      updateData.img = '/images/' + req.file.filename;
     }
 
-    const user = await User.findOne({ email: loginUsername });
-    if (!user) return res.status(400).send('User not found');
-
-    const isMatch = bcrypt.compareSync(loginPassword, user.password);
-    if (!isMatch) return res.status(400).send('Wrong password');
-
-    const token = jwt.sign(
-        { userId: user.id, admin: user.admin },
-        process.env.secret,
-        { expiresIn: '1d' }
+    // Update user in database using original name
+    const updatedUser = await User.findOneAndUpdate(
+      { name: originalName },
+      updateData,
+      { new: true }
     );
 
-    res.status(200).send({
-        user: {
-            id: user.id,
-            name: user.name,
-            email: user.email,
-            img: user.img,
-            admin: user.admin,
-            darkMood: user.darkMood,
-        },
-        token,
-    });
-};
-
-// Create
-exports.registerUser = async (req, res) => {
-    const { name, email, password } = req.body;
-
-    if (!name || !email || !password) {
-        return res.status(400).send('Missing required fields.');
+    if (!updatedUser) {
+      return res.status(404).send('User not found');
     }
 
-    let user = new User({
-        name,
-        email,
-        password: bcrypt.hashSync(password, 8),
-        img: "/images/default-profile.png",
-        admin: false,
-        favs: [],
-        adds: [],
-        lastViewed: null,
-        darkMood: false
-    });
-
-    try {
-        user = await user.save();
-        res.status(201).send({
-            id: user.id,
-            name: user.name,
-            email: user.email,
-            img: user.img,
-        });
-    } catch (error) {
-        if (error.code === 11000) {
-            res.status(400).send('User with that email or name already exists.');
-        } else {
-            res.status(400).send('User registration failed.');
-        }
+    const index = users.findIndex(u => u.name === originalName);
+    if (index !== -1) {
+      users[index] = {
+        ...users[index],
+        ...updateData
+      };
     }
+
+    res.redirect('/adminDashboard');
+  } catch (err) {
+    console.error('Error updating user:', err);
+    res.status(500).send('Error updating user');
+  }
 };
 
-// Delete 
+
+
+//Delete
 exports.deleteUser = async (req, res) => {
-    try {
-        const user = await User.findByIdAndRemove(req.params.id);
-        if (!user) return res.status(404).json({ success: false, message: 'User not found!' });
-        res.status(200).json({ success: true, message: 'User deleted!' });
-    } catch (err) {
-        res.status(500).json({ success: false, error: err });
+  try {
+    const { userName } = req.body;
+
+    // Delete user from database by name
+    const deletedUser = await User.findOneAndDelete({ name: userName });
+
+    if (!deletedUser) {
+      return res.status(404).send('User not found');
     }
+
+    // Remove from local users array
+    const index = users.findIndex(u => u.name === userName);
+    if (index !== -1) {
+      users.splice(index, 1);
+    }
+
+    res.redirect('/adminDashboard');
+  } catch (err) {
+    console.error('Error deleting user:', err);
+    res.status(500).send('Error deleting user');
+  }
 };
 
-// Get user count
-exports.getUserCount = async (req, res) => {
-    try {
-        const userCount = await User.countDocuments();
-        res.send({ userCount });
-    } catch {
-        res.status(500).json({ success: false });
-    }
+
+
+// Get user by ID
+exports.getUserByID = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    if (!user) return res.status(404).send('User not found');
+    res.send(user);
+  } catch (err) {
+    res.status(500).send('Server Error');
+  }
 };
 
-// admin Delete
+
+// Admin delete
 exports.adminDeleteUser = async (req, res) => {
-    try {
-        const user = await User.findByIdAndRemove(req.params.id);
-        if (!user) return res.status(404).json({ success: false, message: 'User not found!' });
-        res.status(200).json({ success: true, message: 'The user is deleted!' });
-    } catch (err) {
-        res.status(500).json({ success: false, error: err });
-    }
+  try {
+    const user = await User.findByIdAndRemove(req.params.id);
+    if (!user) return res.status(404).send('User not found');
+    res.send({ success: true, message: 'Admin deleted user' });
+  } catch (err) {
+    res.status(500).send('Server Error');
+  }
 };
 
-// last viewed 
-exports.updateLastViewed = async (req, res) => {
-    try {
-        const user = await User.findByIdAndUpdate(
-            req.user.userId,
-            { lastViewed: req.body.recipeId },
-            { new: true }
-        ).select('-password');
-
-        if (!user) return res.status(404).send('User not found');
-        res.send({ message: 'Last viewed recipe updated', lastViewed: user.lastViewed });
-    } catch (err) {
-        res.status(500).send('Failed to update last viewed');
-    }
-};
-
-// dark mode
+// Toggle dark mode
 exports.toggleDarkMode = async (req, res) => {
-    try {
-        const user = await User.findById(req.user.userId);
-        if (!user) return res.status(404).send('User not found');
+  try {
+    const user = await User.findById(req.user.userId);
+    if (!user) return res.status(404).send('User not found');
 
-        user.darkMood = !user.darkMood;
-        await user.save();
+    user.isDarkMode = !user.isDarkMode;
+    await user.save();
+    res.send({ isDarkMode: user.isDarkMode });
+  } catch (err) {
+    res.status(500).send('Server Error');
+  }
+};
 
-        res.send({ message: 'Dark mode toggled', darkMood: user.darkMood });
-    } catch (err) {
-        res.status(500).send('Failed to toggle dark mode');
+// Update last viewed
+exports.updateLastViewed = async (req, res) => {
+  try {
+    const { recipeId } = req.body;
+    if (!mongoose.isValidObjectId(recipeId)) {
+      return res.status(400).send('Invalid recipe ID');
     }
+
+    const user = await User.findByIdAndUpdate(
+      req.user.userId,
+      { lastViewed: recipeId },
+      { new: true }
+    );
+
+    if (!user) return res.status(404).send('User not found');
+    res.send(user);
+  } catch (err) {
+    res.status(500).send('Server Error');
+  }
+};
+
+// Get all users 
+exports.getAllUsers = async (req, res) => {
+  try {
+    const users = await User.find();
+    res.send(users);
+  } catch (err) {
+    res.status(500).send('Server Error');
+  }
+};
+
+// Count users (admin)
+exports.getUserCount = async (req, res) => {
+  try {
+    const count = await User.countDocuments();
+    res.send({ count });
+  } catch (err) {
+    res.status(500).send('Server Error');
+  }
 };

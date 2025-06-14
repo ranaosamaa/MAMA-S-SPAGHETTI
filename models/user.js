@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const bcrypt = require('bcryptjs');
 
 const userSchema = new mongoose.Schema({
     name: {
@@ -26,15 +25,15 @@ const userSchema = new mongoose.Schema({
     },
     favs: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'recipes'
+        ref: 'Recipe'
     }],
     adds: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'recipes'
+        ref: 'Recipe'
     }],
     lastViewed: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'recipes'
+        ref: 'Recipe'
     },
     darkMood: {
         type: Boolean,
@@ -48,5 +47,5 @@ userSchema.set('toJSON', {
 userSchema.virtual('id').get(function () {
     return this._id.toHexString();
 });
-const.user= mongoose.model('user', userSchema);
-module.userSchema = userSchema;
+exports.user= mongoose.model('user', userSchema);
+exports.userSchema = userSchema;
